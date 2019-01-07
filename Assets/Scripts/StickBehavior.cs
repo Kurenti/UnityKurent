@@ -15,7 +15,14 @@ public class StickBehavior : MonoBehaviour {
 	}
 	
 	private void OnTriggerEnter(Collider other) {
-        // Change the cube color to green.
-        Debug.Log(other.name);
+        
+		Debug.Log("Triggerred.");
+		GameObject bell = GameObject.Find("BellObject");
+		GameObject kurent = GameObject.Find("PlayerObject");
+		
+		bell.transform.parent = kurent.transform;
+		bell.transform.localPosition = new Vector3(2.85f, -2.71f, 2.2f);
+		
     }
+
 }
