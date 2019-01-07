@@ -402,7 +402,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400002, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.265038
+      value: 8.29
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
       propertyPath: m_LocalPosition.y
@@ -410,7 +410,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 52.448624
+      value: 41.82
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
       propertyPath: m_LocalRotation.x
@@ -436,9 +436,67 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -53.12
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
+      propertyPath: m_Name
+      value: HouseObject
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecfd21d4f3acef64ea507021b753ef16, type: 3}
   m_IsPrefabAsset: 0
+--- !u!1 &1261419628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261419631}
+  - component: {fileID: 1261419630}
+  - component: {fileID: 1261419629}
+  m_Layer: 0
+  m_Name: LakeObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1261419629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1261419628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28e5102d5bab4d4e83dfa9628f1785c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &1261419630
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1261419628}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 13.124054
+  m_Height: 56.378517
+  m_Direction: 1
+  m_Center: {x: -31.09964, y: -14.109226, z: -38.11811}
+--- !u!4 &1261419631
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1261419628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 78.95, y: 0.1, z: 81.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1778609693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 4d0827d0bab59664ebd0f65c7ed004e1,
