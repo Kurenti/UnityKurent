@@ -12,8 +12,8 @@ public class SnowMelter : MonoBehaviour {
     RaycastHit _groundHit;
     int _snowLayerMask;
 
-    [Range(0, 3)] public float _brushSize;
-    [Range(0, 3)] public float _brushStrength;
+    [Range(0, 1)] public float _brushSize;
+    [Range(0, 5)] public float _brushStrength;
 
     // Use this for initialization
     void Start () {
