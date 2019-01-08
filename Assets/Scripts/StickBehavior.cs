@@ -23,7 +23,6 @@ public class StickBehavior : MonoBehaviour {
 		
 		bell.transform.parent = kurent.transform;
 		bell.transform.localPosition = new Vector3(2.85f, -2.71f, 2.2f);
-		
     }
 
 }
