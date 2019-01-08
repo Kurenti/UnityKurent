@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StickBehavior : MonoBehaviour {
-
+	
+	public string appendingBell;
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -16,8 +18,7 @@ public class StickBehavior : MonoBehaviour {
 	
 	private void OnTriggerEnter(Collider other) {
         
-		Debug.Log("Triggerred.");
-		GameObject bell = GameObject.Find("BellObject");
+		GameObject bell = GameObject.Find(appendingBell);
 		GameObject kurent = GameObject.Find("PlayerObject");
 		
 		bell.transform.parent = kurent.transform;
