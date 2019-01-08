@@ -6,10 +6,12 @@ public class PlayerControlsBehavior : MonoBehaviour {
 
 	public float speed;
 	public float rotSpeed;
-
+	
+	private PlayerSnowBehavior psb;
+	
 	// Use this for initialization
 	void Start () {
-		
+		psb = new PlayerSnowBehavior(null, null);
 	}
 	
 	// Update is called once per frame
@@ -35,19 +37,23 @@ public class PlayerControlsBehavior : MonoBehaviour {
 		}
 
 		if (Input.GetKey(KeyCode.Alpha1)) {
-			
+			psb.Attack(1);
 		}
 
 		if (Input.GetKey(KeyCode.Alpha2)) {
-			
+			psb.Attack(2);
 		}
 
 		if (Input.GetKey(KeyCode.Alpha3)) {
-			
+			psb.Attack(3);
 		}
 
 		if (Input.GetKey(KeyCode.Alpha4)) {
-			
+			psb.Attack(4);
 		}
+	}
+	
+	public void addBell(GameObject kurent, GameObject bell) {
+		psb.addBell(kurent, bell);
 	}
 }
