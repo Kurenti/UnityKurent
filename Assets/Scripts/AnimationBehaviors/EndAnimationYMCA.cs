@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EndAnimationJump : StateMachineBehaviour {
+public class EndAnimationYMCA : StateMachineBehaviour {
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -17,7 +17,7 @@ public class EndAnimationJump : StateMachineBehaviour {
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("Jump", false);
+        animator.SetBool("YMCA", false);
         //erase this as soon as possible lord forgive me
         var allObjects = FindObjectsOfType(typeof(GameObject));
         foreach (GameObject go in allObjects)

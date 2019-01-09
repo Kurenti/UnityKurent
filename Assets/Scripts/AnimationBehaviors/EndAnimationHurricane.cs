@@ -18,6 +18,16 @@ public class EndAnimationHurricane : StateMachineBehaviour {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("Hurricane", false);
+        //erase this as soon as possible lord forgive me
+        var allObjects = FindObjectsOfType(typeof(GameObject));
+        foreach (GameObject go in allObjects)
+        {
+            if (go.layer == 9)
+            {
+                go.GetComponent<SnowMelter>()._brushSize = 0.1f;
+                break;
+            }
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

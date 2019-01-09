@@ -29,24 +29,26 @@ public class PlayerControlsBehavior : MonoBehaviour {
         Rigidbody rb = GetComponent<Rigidbody>();
 
         //Forward-backward movement
-        if (Input.GetKey(KeyCode.W)) {
-            rb.MovePosition(transform.position + transform.forward * speed);
-            animSpeed += 0.1f;
+        if (Input.GetAxis("Vertical") != 0) {
+
+            //Move position
+            rb.MovePosition(transform.position + transform.forward * speed * Input.GetAxis("Vertical"));
+            //Increase animation move speed
+            animSpeed += 0.1f * Input.GetAxis("Vertical");
+
+            //Positive direction speed limiting
             if (animSpeed > speed / groundSpeed) {
-                //Case just limit animSpeed to max 1 / 0.5
+                //Case: just limit animSpeed to max 1 or 0.5
                 if (animSpeed - speed / groundSpeed <= 0.2)
                     animSpeed = speed / groundSpeed;
-                //Case decay animSpeed from running to walking
+                //Case: decay animSpeed from running to walking
                 else
                     animSpeed -= 0.2f;
             }
-
-        }
-        else if (Input.GetKey(KeyCode.S)) {
-            rb.MovePosition(transform.position + transform.forward * -speed);
-            animSpeed -= 0.1f;
-            if (animSpeed < -1)
+            //Negative direction speed limiting
+            else if (animSpeed < -1)
                 animSpeed = -1;
+
         }
         else {
             //Decay animation speed
@@ -62,33 +64,59 @@ public class PlayerControlsBehavior : MonoBehaviour {
             }
         }
 
+        //Animate movement speed
         animator.SetFloat("MoveSpeed", animSpeed);
 
         //Turning left-right
-        if (Input.GetKey(KeyCode.A)) {
-            Quaternion deltaRotation = Quaternion.Euler(0, -rotSpeed, 0);
-            rb.MoveRotation(rb.rotation * deltaRotation);
-        }
-
-        if (Input.GetKey(KeyCode.D)) {
-            Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed, 0);
+        if (Input.GetAxis("Horizontal") != 0) {
+            Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed * Input.GetAxis("Horizontal"), 0);
             rb.MoveRotation(rb.rotation * deltaRotation);
         }
 
         //Jump
         if (Input.GetKey(KeyCode.Space)) {
             animator.SetBool("Jump", true);
+            //erase this as soon as possible lord forgive me
+            var allObjects = FindObjectsOfType(typeof(GameObject));
+            foreach (GameObject go in allObjects)
+            {
+                if (go.layer == 9) {
+                    go.GetComponent<SnowMelter>()._brushSize = 0.2f;
+                    break;
+                }
+            }
         }
 
         //Attacks
 		if (Input.GetKey(KeyCode.Alpha1)) {
 			psb.Attack(1);
             animator.SetBool("Hurricane", true);
-		}
+            //erase this as soon as possible lord forgive me
+            var allObjects = FindObjectsOfType(typeof(GameObject));
+            foreach (GameObject go in allObjects)
+            {
+                if (go.layer == 9)
+                {
+                    go.GetComponent<SnowMelter>()._brushSize = 0.3f;
+                    break;
+                }
+            }
+        }
 
 		if (Input.GetKey(KeyCode.Alpha2)) {
 			psb.Attack(2);
-		}
+            animator.SetBool("YMCA", true);
+            //erase this as soon as possible lord forgive me
+            var allObjects = FindObjectsOfType(typeof(GameObject));
+            foreach (GameObject go in allObjects)
+            {
+                if (go.layer == 9)
+                {
+                    go.GetComponent<SnowMelter>()._brushSize = 0.4f;
+                    break;
+                }
+            }
+        }
 
 		if (Input.GetKey(KeyCode.Alpha3)) {
 			psb.Attack(3);
