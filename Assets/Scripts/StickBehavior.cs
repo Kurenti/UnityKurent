@@ -21,7 +21,7 @@ public class StickBehavior : MonoBehaviour {
 		GameObject bell = GameObject.Find(appendingBell);
 		GameObject kurent = GameObject.Find("PlayerObject");
 
-		PlayerControlsBehavior pcb = (PlayerControlsBehavior) kurent.GetComponent(typeof(PlayerControlsBehavior));
+		PlayerBehavior pcb = (PlayerBehavior) kurent.GetComponent(typeof(PlayerBehavior));
 		pcb.addBell(kurent, bell);
     }
 

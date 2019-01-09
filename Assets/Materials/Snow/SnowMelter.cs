@@ -49,12 +49,12 @@ public class SnowMelter : MonoBehaviour {
 
             //Also slow down player move speed - change this script to be owned by player so
             //this works correctly in case of multiple snow patches
-            player.GetComponent<PlayerControlsBehavior>().setSnowSpeed();
+            player.GetComponent<PlayerBehavior>().setSnowSpeed();
         } else
         {
             //Change player move speed to normal - change this script to be owned by player so
             //this works correctly in case of multiple snow patches
-            player.GetComponent<PlayerControlsBehavior>().setGroundSpeed();
+            player.GetComponent<PlayerBehavior>().setGroundSpeed();
         }
 	}
 }
