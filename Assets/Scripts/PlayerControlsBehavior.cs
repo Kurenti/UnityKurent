@@ -4,40 +4,86 @@ using UnityEngine;
 
 public class PlayerControlsBehavior : MonoBehaviour {
 
-	public float speed;
+    //Animations and movement to be moved out of here ffs
+
+    public float groundSpeed;
+    public float snowSpeed;
 	public float rotSpeed;
-	
+
+    private float speed;
+    private float animSpeed;
+
+    private Animator animator;
 	private PlayerSnowBehavior psb;
 	
 	// Use this for initialization
 	void Start () {
+        animator = GetComponentInChildren<Animator>();
 		psb = new PlayerSnowBehavior(null, null);
+
+        speed = groundSpeed;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		Rigidbody rb = GetComponent<Rigidbody>();
 
-		if (Input.GetKey(KeyCode.W)) {
-			rb.MovePosition(transform.position + transform.forward * speed);
-		}
+    // Update is called once per frame
+    void Update() {
+        Rigidbody rb = GetComponent<Rigidbody>();
 
-		if (Input.GetKey(KeyCode.S)) {
-			rb.MovePosition(transform.position + transform.forward * - speed);
-		}
+        //Forward-backward movement
+        if (Input.GetKey(KeyCode.W)) {
+            rb.MovePosition(transform.position + transform.forward * speed);
+            animSpeed += 0.1f;
+            if (animSpeed > speed / groundSpeed) {
+                //Case just limit animSpeed to max 1 / 0.5
+                if (animSpeed - speed / groundSpeed <= 0.2)
+                    animSpeed = speed / groundSpeed;
+                //Case decay animSpeed from running to walking
+                else
+                    animSpeed -= 0.2f;
+            }
 
-		if (Input.GetKey(KeyCode.A)) {
-			Quaternion deltaRotation = Quaternion.Euler(0, - rotSpeed, 0);
-			rb.MoveRotation(rb.rotation * deltaRotation);
-		}
+        }
+        else if (Input.GetKey(KeyCode.S)) {
+            rb.MovePosition(transform.position + transform.forward * -speed);
+            animSpeed -= 0.1f;
+            if (animSpeed < -1)
+                animSpeed = -1;
+        }
+        else {
+            //Decay animation speed
+            if (animSpeed > 0) {
+                animSpeed -= 0.1f;
+                if (animSpeed < 0)
+                    animSpeed = 0;
+            }
+            else if (animSpeed < 0) {
+                animSpeed += 0.1f;
+                if (animSpeed > 0)
+                    animSpeed = 0;
+            }
+        }
 
-		if (Input.GetKey(KeyCode.D)) {
-			Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed, 0);
-			rb.MoveRotation(rb.rotation * deltaRotation);			
-		}
+        animator.SetFloat("MoveSpeed", animSpeed);
 
+        //Turning left-right
+        if (Input.GetKey(KeyCode.A)) {
+            Quaternion deltaRotation = Quaternion.Euler(0, -rotSpeed, 0);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+        }
+
+        if (Input.GetKey(KeyCode.D)) {
+            Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed, 0);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+        }
+
+        //Jump
+        if (Input.GetKey(KeyCode.Space)) {
+            animator.SetBool("Jump", true);
+        }
+
+        //Attacks
 		if (Input.GetKey(KeyCode.Alpha1)) {
 			psb.Attack(1);
+            animator.SetBool("Hurricane", true);
 		}
 
 		if (Input.GetKey(KeyCode.Alpha2)) {
@@ -56,4 +102,16 @@ public class PlayerControlsBehavior : MonoBehaviour {
 	public void addBell(GameObject kurent, GameObject bell) {
 		psb.addBell(kurent, bell);
 	}
+
+    public void setGroundSpeed()
+    {
+        if (speed != groundSpeed)
+            speed = groundSpeed;
+    }
+
+    public void setSnowSpeed()
+    {
+        if (speed != snowSpeed)
+            speed = snowSpeed;
+    }
 }

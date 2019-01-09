@@ -9,7 +9,7 @@ public class PlayerSnowBehavior {
 	
 	private int maxPower;
 
-	public PlayerSnowBehavior (GameObject leftBell, GameObject rightBell) {
+    public PlayerSnowBehavior (GameObject leftBell, GameObject rightBell) {
 		this.leftBell = leftBell;
 		this.rightBell = rightBell;
 		

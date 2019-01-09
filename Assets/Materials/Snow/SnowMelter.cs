@@ -46,6 +46,15 @@ public class SnowMelter : MonoBehaviour {
             Graphics.Blit(_splatMap, temp);
             Graphics.Blit(temp, _splatMap, _drawMaterial);
             RenderTexture.ReleaseTemporary(temp);
+
+            //Also slow down player move speed - change this script to be owned by player so
+            //this works correctly in case of multiple snow patches
+            player.GetComponent<PlayerControlsBehavior>().setSnowSpeed();
+        } else
+        {
+            //Change player move speed to normal - change this script to be owned by player so
+            //this works correctly in case of multiple snow patches
+            player.GetComponent<PlayerControlsBehavior>().setGroundSpeed();
         }
 	}
 }
