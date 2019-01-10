@@ -139,12 +139,16 @@ public class PlayerBehavior : MonoBehaviour {
         {
             animator.SetBool("Hurricane", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
+			
+			kurentAudio.PlayAttack1();
         }
 
         if (controls.attack2)
         {
             animator.SetBool("YMCA", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
+			
+			kurentAudio.PlayAttack2();
         }
 
         if (controls.attack3)

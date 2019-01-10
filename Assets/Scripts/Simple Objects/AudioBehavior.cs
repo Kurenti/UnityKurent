@@ -7,6 +7,8 @@ public class AudioBehavior : MonoBehaviour {
 	private AudioSource elevatorMusic;
 	private AudioSource steps;
 	private AudioSource jump;
+	private AudioSource attack1;
+	private AudioSource attack2;
 	
 	// Use this for initialization
 	void Start () {
@@ -14,6 +16,8 @@ public class AudioBehavior : MonoBehaviour {
 		elevatorMusic = sources[0];
 		steps = sources[1];
 		jump = sources[2];
+		attack1 = sources[3];
+		attack2 = sources[4];
 		
 		elevatorMusic.Play();
 	}
@@ -38,6 +42,18 @@ public class AudioBehavior : MonoBehaviour {
 	public void PlayJump(float delay) {
 		if (!jump.isPlaying) {
 			jump.PlayDelayed(delay);
+		}
+	}
+	
+	public void PlayAttack1() {
+		if (!attack1.isPlaying) {
+			attack1.Play();
+		}
+	}
+	
+	public void PlayAttack2() {
+		if(!attack2.isPlaying) {
+			attack2.Play();
 		}
 	}
 }
