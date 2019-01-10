@@ -153,16 +153,25 @@ public class PlayerBehavior : MonoBehaviour {
 
         if (controls.attack3)
         {
+			
+			kurentAudio.PlayAttack3();
         }
 
         if (controls.attack4)
         {
+			
+			kurentAudio.PlayAttack4();
         }
     }
 
     public void addBell(GameObject kurent, GameObject bell)
     {
         psb.addBell(kurent, bell);
+		if (Random.Range(0, 1) < 0.5) {
+			kurentAudio.PlayBell1();
+		} else {
+			kurentAudio.PlayBell2();
+		}
     }
 
     public void setGroundSpeed()
