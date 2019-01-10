@@ -18,16 +18,9 @@ public class EndAnimationJump : StateMachineBehaviour {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("Jump", false);
-        //erase this as soon as possible lord forgive me
-        var allObjects = FindObjectsOfType(typeof(GameObject));
-        foreach (GameObject go in allObjects)
-        {
-            if (go.layer == 9)
-            {
-                go.GetComponent<SnowMelter>()._brushSize = 0.1f;
-                break;
-            }
-        }
+        animator.SetBool("Hurricane", false);
+        animator.SetBool("YMCA", false);
+        animator.GetComponentInParent<SnowMelter>().currentBrushSize = animator.GetComponentInParent<SnowMelter>().brushSize;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

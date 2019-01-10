@@ -5,8 +5,8 @@
 		_MainTex ("Texture", 2D) = "white" {}
 		_Coordinate("Coordinate", Vector) = (0,0,0,0)
 		_Color("Draw Color", Color) = (1,0,0,0)
-		_Size("Size", Range(0, 3)) = 1
-		_Strength("Strength", Range(0, 3)) = 1
+		_Size("Size", Range(0, 10)) = 1
+		_Strength("Strength", Range(0, 10)) = 1
 	}
 	SubShader
 	{

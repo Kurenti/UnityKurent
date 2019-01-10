@@ -38,8 +38,8 @@ public class PlayerBehavior : MonoBehaviour {
         if (controls.moveDirection != 0) {
 
             //Move position
-            //-------needs timedelta!!!!------------
-            rb.MovePosition(transform.position + transform.forward * speed * controls.moveDirection);
+            rb.MovePosition(transform.position +
+                            transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
             
             //Everything from here till setting animator "MoveSpeed" is currently not used, testing
             //needed to see if it is actually needed
@@ -72,27 +72,19 @@ public class PlayerBehavior : MonoBehaviour {
         //Animate movement speed
         animator.SetFloat("MoveSpeed", animSpeed);
 
+
         //Turning left-right
         if (controls.turnDirection != 0) {
-            //-------needs timedelta!!!!------------
-            Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed * controls.turnDirection, 0);
+            Quaternion deltaRotation = Quaternion.Euler(0, rotSpeed * Time.fixedDeltaTime * controls.turnDirection, 0);
             rb.MoveRotation(rb.rotation * deltaRotation);
         }
 
         //Jump
         if (controls.jump) {
             animator.SetBool("Jump", true);
-            //erase this as soon as possible lord forgive me
-            var allObjects = FindObjectsOfType(typeof(GameObject));
-            foreach (GameObject go in allObjects)
-            {
-                if (go.layer == 9)
-                {
-                    go.GetComponent<SnowMelter>()._brushSize = 0.2f;
-                    break;
-                }
-            }
+            GetComponentInParent<SnowMelter>().currentBrushSize = 2* GetComponentInParent<SnowMelter>().brushSize;
         }
+
 
         //Actions
         /////////
@@ -102,40 +94,22 @@ public class PlayerBehavior : MonoBehaviour {
         {
             psb.Attack(1);
             animator.SetBool("Hurricane", true);
-            //erase this as soon as possible lord forgive me
-            var allObjects = FindObjectsOfType(typeof(GameObject));
-            foreach (GameObject go in allObjects)
-            {
-                if (go.layer == 9)
-                {
-                    go.GetComponent<SnowMelter>()._brushSize = 0.3f;
-                    break;
-                }
-            }
+            GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
         }
 
-        if (controls.attack1)
+        if (controls.attack2)
         {
             psb.Attack(2);
             animator.SetBool("YMCA", true);
-            //erase this as soon as possible lord forgive me
-            var allObjects = FindObjectsOfType(typeof(GameObject));
-            foreach (GameObject go in allObjects)
-            {
-                if (go.layer == 9)
-                {
-                    go.GetComponent<SnowMelter>()._brushSize = 0.4f;
-                    break;
-                }
-            }
+            GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
         }
 
-        if (controls.attack1)
+        if (controls.attack3)
         {
             psb.Attack(3);
         }
 
-        if (controls.attack1)
+        if (controls.attack4)
         {
             psb.Attack(4);
         }

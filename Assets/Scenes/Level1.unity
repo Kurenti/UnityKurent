@@ -355,6 +355,7 @@ GameObject:
   - component: {fileID: 1778609697}
   - component: {fileID: 1778609695}
   - component: {fileID: 1778609698}
+  - component: {fileID: 1778609699}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -435,9 +436,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b88733a6f0077499476a13cd81e141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSpeed: 0.1
-  snowSpeed: 0.05
-  rotSpeed: 1
+  groundSpeed: 5
+  snowSpeed: 2.5
+  rotSpeed: 70
+--- !u!114 &1778609699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1778609693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6972b6fd240ef0f41a0d6c225ae7980a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _drawShader: {fileID: 4800000, guid: d1ce4b3b70155c745b537cf9e1d702ee, type: 3}
+  renderTextureSize: 1024
+  brushSize: 5
+  brushStrength: 5
+  currentBrushSize: 0
 --- !u!1 &1970247576
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +544,6 @@ GameObject:
   - component: {fileID: 1971640694}
   - component: {fileID: 1971640693}
   - component: {fileID: 1971640692}
-  - component: {fileID: 1971640691}
   m_Layer: 9
   m_Name: Snow
   m_TagString: Untagged
@@ -535,21 +551,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1971640691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971640690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6972b6fd240ef0f41a0d6c225ae7980a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _drawShader: {fileID: 4800000, guid: d1ce4b3b70155c745b537cf9e1d702ee, type: 3}
-  player: {fileID: 1778609694}
-  _brushSize: 0.01
-  _brushStrength: 3
 --- !u!64 &1971640692
 MeshCollider:
   m_ObjectHideFlags: 0
