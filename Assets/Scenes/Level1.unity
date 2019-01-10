@@ -372,7 +372,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1778609693}
   m_LocalRotation: {x: -0, y: -0.74524546, z: -0, w: 0.6667903}
-  m_LocalPosition: {x: 177.34, y: 81.36, z: 285.7}
+  m_LocalPosition: {x: 178, y: 81.36, z: 279.7}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1052591611}
@@ -440,8 +440,13 @@ MonoBehaviour:
   groundSpeed: 5
   snowSpeed: 3
   rotSpeed: 70
-  foliageDensity: 0.5
+  foliageDensity: 0.75
+  foliageSpawnRadius: 5
   plant1: {fileID: 4333487733517554, guid: 6654bb7ccf720db4dac785c23d15ab36, type: 2}
+  plant2: {fileID: 4333487733517554, guid: 6654bb7ccf720db4dac785c23d15ab36, type: 2}
+  plant3: {fileID: 4553032625287444, guid: 470b60be178258842acfb6fe2fc3deed, type: 2}
+  plant4: {fileID: 4990112799990840, guid: 90fa74d42b821654182c39b93d7afb36, type: 2}
+  currentFoliageSpawnRadius: 0
 --- !u!114 &1778609699
 MonoBehaviour:
   m_ObjectHideFlags: 0

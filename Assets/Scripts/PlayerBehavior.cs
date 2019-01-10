@@ -19,23 +19,33 @@ public class PlayerBehavior : MonoBehaviour {
     
     [Header("Botany")]
     [Range(0, 1)] public float foliageDensity = 0.75f;
+    [Range(1, 5)] public int foliageSpawnRadius = 1;
     public Transform plant1;
+    public Transform plant2;
+    public Transform plant3;
+    public Transform plant4;
 
-    [HideInInspector] public int foliageSpawnRadius = 1;
+    private Transform[] plants;
+    [HideInInspector] public int currentFoliageSpawnRadius;
     private Texture2D foliageMap;
-    private RaycastHit foliageSpawnHeight;
+    private RaycastHit foliageSpawnRay;
+    private Vector3 spawnPosition;
 
     // Use this for initialization
     void Start () {
+        //Movement
+        //////////
         controls = GetComponent<PlayerControls>();
         animator = GetComponentInChildren<Animator>();
+
         psb = new PlayerSnowBehavior(null, null);
 
         speed = groundSpeed;
         //This is currently unused, further testing needed to see if actually improves gameplay
         animStartSpeed = 0.2f;
 
-        //Set up foliageMap
+        //Set up Foliage control
+        ////////////////////////
         //Foliage map relies on landscape having a corner in 0,y,0 and expanding in +x, +z
         var allObjects = FindObjectsOfType(typeof(GameObject));
         foreach (GameObject obj in allObjects)
@@ -54,6 +64,8 @@ public class PlayerBehavior : MonoBehaviour {
                 break;
             }
         }
+        currentFoliageSpawnRadius = foliageSpawnRadius;
+        plants = new Transform[]{plant1, plant2, plant3, plant4};
     }
 
     // FixedUpdate is called once per physics update
@@ -124,12 +136,14 @@ public class PlayerBehavior : MonoBehaviour {
         {
             animator.SetBool("Hurricane", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
+            currentFoliageSpawnRadius = foliageSpawnRadius + 2;
         }
 
         if (controls.attack2)
         {
             animator.SetBool("YMCA", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
+            currentFoliageSpawnRadius = foliageSpawnRadius + 2;
         }
 
         if (controls.attack3)
@@ -178,14 +192,17 @@ public class PlayerBehavior : MonoBehaviour {
                                     0.0f));
                 
                 //Generate random spawn point around player (this can spawn foliage outside of landscape at y zero)
-                Vector3 spawnPosition = new Vector3((int)position.x + Random.value * foliageSpawnRadius,
-                                                    200.0f,
-                                                    (int)position.z + Random.value * foliageSpawnRadius);
-                Physics.Raycast(spawnPosition, Vector3.down, out foliageSpawnHeight, 200.0f, LayerMask.GetMask("Terrain"));
-                spawnPosition.y = foliageSpawnHeight.point.y;
+                //SpawnRadius 1 gives 1 square, 2 gives 3*3, 3 gives 5*5...
+                spawnPosition = new Vector3((int)position.x - (currentFoliageSpawnRadius - 1) + Random.value * (2*currentFoliageSpawnRadius - 1),
+                                            200.0f,
+                                            (int)position.z - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1));
+                Physics.Raycast(spawnPosition, Vector3.down, out foliageSpawnRay, 200.0f, LayerMask.GetMask("Terrain"));
+                spawnPosition.y = foliageSpawnRay.point.y;
+                //Random yaw
+                Quaternion spawnRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
                 //Generate plant
-                Instantiate(plant1, spawnPosition, Quaternion.identity);
+                Instantiate(plants[Random.Range(0, plants.Length)], spawnPosition, spawnRotation);
             }
         }
     }

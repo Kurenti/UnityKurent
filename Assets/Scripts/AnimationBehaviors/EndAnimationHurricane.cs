@@ -21,6 +21,7 @@ public class EndAnimationHurricane : StateMachineBehaviour {
         animator.SetBool("Hurricane", false);
         animator.SetBool("YMCA", false);
         animator.GetComponentInParent<SnowMelter>().currentBrushSize = animator.GetComponentInParent<SnowMelter>().brushSize;
+        animator.GetComponentInParent<PlayerBehavior>().currentFoliageSpawnRadius = animator.GetComponentInParent<PlayerBehavior>().foliageSpawnRadius;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

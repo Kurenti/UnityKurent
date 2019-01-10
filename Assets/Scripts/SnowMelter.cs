@@ -16,7 +16,6 @@ public class SnowMelter : MonoBehaviour {
 
     [Range(1, 10)] public float brushSize = 5;
     [Range(1, 10)] public float brushStrength = 5;
-    [Space]
     [HideInInspector] public float currentBrushSize;
 
     // Use this for initialization
