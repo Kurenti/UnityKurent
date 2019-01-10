@@ -35,14 +35,6 @@ public class PlayerSnowBehavior {
 			bell.transform.parent = kurent.transform;
 			bell.transform.localPosition = new Vector3(2.85f, -2.71f, 2.2f);
 			return;
-		} 
-	}
-	
-	public void Attack(int type) {
-		
-		if (this.maxPower >= type) {
-			Debug.Log("Attack: " + type);
-			/*TODO: insert snow melting logic and trigger kurent animations*/
 		}
 	}
 	

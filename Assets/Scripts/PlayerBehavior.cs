@@ -8,6 +8,7 @@ public class PlayerBehavior : MonoBehaviour {
     private Animator animator;
     private PlayerSnowBehavior psb;
 
+    [Header("Movement speed")]
     public float groundSpeed;
     public float snowSpeed;
     public float rotSpeed;
@@ -15,6 +16,14 @@ public class PlayerBehavior : MonoBehaviour {
     private float speed;
     private float animSpeed;
     private float animStartSpeed;
+    
+    [Header("Botany")]
+    [Range(0, 1)] public float foliageDensity = 0.75f;
+    public Transform plant1;
+
+    [HideInInspector] public int foliageSpawnRadius = 1;
+    private Texture2D foliageMap;
+    private RaycastHit foliageSpawnHeight;
 
     // Use this for initialization
     void Start () {
@@ -25,6 +34,26 @@ public class PlayerBehavior : MonoBehaviour {
         speed = groundSpeed;
         //This is currently unused, further testing needed to see if actually improves gameplay
         animStartSpeed = 0.2f;
+
+        //Set up foliageMap
+        //Foliage map relies on landscape having a corner in 0,y,0 and expanding in +x, +z
+        var allObjects = FindObjectsOfType(typeof(GameObject));
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.layer == LayerMask.NameToLayer("Terrain"))
+            {
+                foliageMap = new Texture2D((int)Mathf.Floor(obj.GetComponent<Renderer>().bounds.size.x),
+                                           (int)Mathf.Floor(obj.GetComponent<Renderer>().bounds.size.z));
+                Color blackCol = new Color(0, 0, 0);
+                var texArray = foliageMap.GetPixels();
+                for (var i = 0; i < texArray.Length; i++)
+                {
+                    texArray[i] = blackCol;
+                }
+                foliageMap.SetPixels(texArray);
+                break;
+            }
+        }
     }
 
     // FixedUpdate is called once per physics update
@@ -40,6 +69,7 @@ public class PlayerBehavior : MonoBehaviour {
             //Move position
             rb.MovePosition(transform.position +
                             transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
+            plantFoliage(transform.position);
             
             //Everything from here till setting animator "MoveSpeed" is currently not used, testing
             //needed to see if it is actually needed
@@ -92,26 +122,22 @@ public class PlayerBehavior : MonoBehaviour {
         //Attacks
         if (controls.attack1)
         {
-            psb.Attack(1);
             animator.SetBool("Hurricane", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
         }
 
         if (controls.attack2)
         {
-            psb.Attack(2);
             animator.SetBool("YMCA", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
         }
 
         if (controls.attack3)
         {
-            psb.Attack(3);
         }
 
         if (controls.attack4)
         {
-            psb.Attack(4);
         }
     }
 
@@ -130,5 +156,37 @@ public class PlayerBehavior : MonoBehaviour {
     {
         if (speed != snowSpeed)
             speed = snowSpeed;
+    }
+
+    private void plantFoliage(Vector3 position)
+    {
+        //Only plant new foliage if foliageMap at x, y permits it
+        float foliageValue = foliageMap.GetPixel((int)position.x, (int)position.z).r;
+        if (foliageValue < 1.0f)
+        {
+            //Some random foliage generation
+            //A pow4 is used as it gives a nice curve turning foliage density to
+            //per-frame-spawn-propability at 0->0, 0.5->~0.05, 1.0->1.0
+            if (Random.value < Mathf.Pow(foliageDensity, 4)) {
+                //Increase red value in the foliage map
+                foliageMap.SetPixel((int)position.x, (int)position.z,
+                                    new Color(Mathf.Min(
+                                        foliageValue + (1.01f - foliageDensity),
+                                        //1.01 so that even 1 increases foliage count
+                                        1.0f),
+                                    0.0f,
+                                    0.0f));
+                
+                //Generate random spawn point around player (this can spawn foliage outside of landscape at y zero)
+                Vector3 spawnPosition = new Vector3((int)position.x + Random.value * foliageSpawnRadius,
+                                                    200.0f,
+                                                    (int)position.z + Random.value * foliageSpawnRadius);
+                Physics.Raycast(spawnPosition, Vector3.down, out foliageSpawnHeight, 200.0f, LayerMask.GetMask("Terrain"));
+                spawnPosition.y = foliageSpawnHeight.point.y;
+
+                //Generate plant
+                Instantiate(plant1, spawnPosition, Quaternion.identity);
+            }
+        }
     }
 }

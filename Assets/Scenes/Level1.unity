@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 850277633}
   - component: {fileID: 850277632}
   - component: {fileID: 850277631}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Landscape_msh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,11 +265,12 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 850277630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -33.221077, y: 45.724644, z: 53.487938}
+  m_LocalPosition: {x: 120.85, y: 45.724644, z: 155.5}
   m_LocalScale: {x: 17.26133, y: 17.26133, z: 17.26133}
-  m_Children: []
+  m_Children:
+  - {fileID: 1971640695}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1052591610
 Prefab:
@@ -371,7 +372,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1778609693}
   m_LocalRotation: {x: -0, y: -0.74524546, z: -0, w: 0.6667903}
-  m_LocalPosition: {x: 34.2, y: 81.16, z: 195.2}
+  m_LocalPosition: {x: 177.34, y: 81.36, z: 285.7}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1052591611}
@@ -437,8 +438,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundSpeed: 5
-  snowSpeed: 2.5
+  snowSpeed: 3
   rotSpeed: 70
+  foliageDensity: 0.5
+  plant1: {fileID: 4333487733517554, guid: 6654bb7ccf720db4dac785c23d15ab36, type: 2}
 --- !u!114 &1778609699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +456,7 @@ MonoBehaviour:
   _drawShader: {fileID: 4800000, guid: d1ce4b3b70155c745b537cf9e1d702ee, type: 3}
   renderTextureSize: 1024
   brushSize: 5
-  brushStrength: 5
+  brushStrength: 7
   currentBrushSize: 0
 --- !u!1 &1970247576
 GameObject:
@@ -617,9 +620,9 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1971640690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -65.40578, y: 54.9, z: 105.30724}
-  m_LocalScale: {x: 29.0612, y: 29.0612, z: 29.0612}
+  m_LocalPosition: {x: -1.8645551, y: 0.5315557, z: 3.002046}
+  m_LocalScale: {x: 1.6836015, y: 1.6836015, z: 1.6836015}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 850277634}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
