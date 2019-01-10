@@ -52,9 +52,9 @@
 												  (v.vertex.y + _MeshExtent.y) / (_MeshExtent.y*2.0),
 												  (v.vertex.z + _MeshExtent.z) / (_MeshExtent.z*2.0),
 												  0);
-			float d_Displaced = 1 - tex2Dlod(_Splat, float4(localNormalizedCoords.xz,0,0)).r;
+			float d_Displaced = tex2Dlod(_Splat, float4(localNormalizedCoords.xz,0,0)).r;
 
-			v.vertex.y += d_Displaced * _Displacement;
+			v.vertex.y -= d_Displaced * _Displacement;
 		}
 
 		UNITY_INSTANCING_BUFFER_START(Props)
