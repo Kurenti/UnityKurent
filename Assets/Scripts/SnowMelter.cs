@@ -8,8 +8,6 @@ public class SnowMelter : MonoBehaviour {
     private RenderTexture _splatMap;
     private Material _snowMaterial;
     private Material _drawMaterial;
-    private RaycastHit _snowHit;
-    private int _snowLayerMask;
     private GameObject _snow;
     
     public enum RenderTxtSizes {_1024 = 1024, _2048 = 2048 };
@@ -22,10 +20,7 @@ public class SnowMelter : MonoBehaviour {
     // Use this for initialization
     void Start () {
         currentBrushSize = brushSize;
-
-        _snowLayerMask = LayerMask.GetMask("Snow");
-        _drawMaterial = new Material(_drawShader);
-
+        
         //Get snow material
         var allObjects = FindObjectsOfType(typeof(GameObject));
         foreach (GameObject obj in allObjects) {
@@ -35,6 +30,7 @@ public class SnowMelter : MonoBehaviour {
             }
         }
 
+        _drawMaterial = new Material(_drawShader);
         _snowMaterial = _snow.GetComponent<MeshRenderer>().material;
         _splatMap = new RenderTexture((int)renderTextureSize, (int)renderTextureSize, 0, RenderTextureFormat.ARGBFloat);
         _snowMaterial.SetTexture("_Splat", _splatMap);
@@ -46,18 +42,20 @@ public class SnowMelter : MonoBehaviour {
 	
 	// Update is called once per physics update
 	void FixedUpdate () {
-		if (Physics.Raycast(new Vector3(GetComponent<Transform>().position.x,
-                                        _snow.GetComponent<BoxCollider>().bounds.max.y + 1,
-                                        GetComponent<Transform>().position.z),
-                            Vector3.down,
-                            out _snowHit,
-                            2, _snowLayerMask))
+        //Check if snow object bounding box contains player position (feet, approximately)
+        if (_snow.GetComponent<BoxCollider>().bounds.Contains(
+                    GetComponent<Transform>().position -
+                        new Vector3(0.0f,
+                                    GetComponent<CapsuleCollider>().height * GetComponent<Transform>().localScale.y * 0.5f,
+                                    0.0f)))
         {
             //Get normalized unscaled local coordinates with origin at top left
-            Vector3 localPosUnscaled = GetComponent<Transform>().position - _snowHit.transform.position + _snowHit.collider.bounds.extents;
+            Vector3 localPosUnscaled = GetComponent<Transform>().position -
+                                        _snow.GetComponent<Transform>().position +
+                                        _snow.GetComponent<BoxCollider>().bounds.extents;
 
-            _drawMaterial.SetVector("_Coordinate", new Vector4(localPosUnscaled.x / _snowHit.collider.bounds.size.x,
-                                                               localPosUnscaled.z / _snowHit.collider.bounds.size.z,
+            _drawMaterial.SetVector("_Coordinate", new Vector4(localPosUnscaled.x / _snow.GetComponent<BoxCollider>().bounds.size.x,
+                                                               localPosUnscaled.z / _snow.GetComponent<BoxCollider>().bounds.size.z,
                                                                0, 0));
             _drawMaterial.SetFloat("_Size", currentBrushSize / 500);
             _drawMaterial.SetFloat("_Strength", brushStrength);
