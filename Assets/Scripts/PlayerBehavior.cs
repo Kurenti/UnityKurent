@@ -7,6 +7,7 @@ public class PlayerBehavior : MonoBehaviour {
     private PlayerControls controls;
     private Animator animator;
     private PlayerSnowBehavior psb;
+	private AudioBehavior kurentAudio;
 
     [Header("Movement speed")]
     public float groundSpeed;
@@ -30,6 +31,7 @@ public class PlayerBehavior : MonoBehaviour {
         controls = GetComponent<PlayerControls>();
         animator = GetComponentInChildren<Animator>();
         psb = new PlayerSnowBehavior(null, null);
+		kurentAudio = GetComponentInChildren<AudioBehavior>();
 
         speed = groundSpeed;
         //This is currently unused, further testing needed to see if actually improves gameplay
@@ -89,11 +91,17 @@ public class PlayerBehavior : MonoBehaviour {
             //Negative direction speed limiting
             else if (animSpeed < -1)
                 animSpeed = -1;
+			
+			// Play steps sound
+			kurentAudio.PlaySteps();
 
         } else {
             animSpeed = animSpeed == 0 ? (animSpeed) :
                             (animSpeed > 0 ? (Mathf.Max(0, animSpeed - animStartSpeed)) :
                                              (Mathf.Min(0, animSpeed + animStartSpeed)));
+			 
+			// Stop steps sound
+			kurentAudio.StopSteps();
         }
 
         //This line ommits the above animSpeed stuff
@@ -113,6 +121,13 @@ public class PlayerBehavior : MonoBehaviour {
         if (controls.jump) {
             animator.SetBool("Jump", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 2* GetComponentInParent<SnowMelter>().brushSize;
+			
+			if (controls.moveDirection != 0) {
+				kurentAudio.PlayJump(0f);
+			} else {
+				kurentAudio.PlayJump(1f);
+			}
+			
         }
 
 
