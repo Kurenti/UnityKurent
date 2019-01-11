@@ -33,6 +33,7 @@ public class ZeleniJurijBehavior : MonoBehaviour {
         if (other.gameObject.name == "PlayerObject")
         {
             jurijEventStarted = true;
+            other.GetComponent<PlayerBehavior>().nearJurij = true;
         }
     }
 }

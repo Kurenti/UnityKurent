@@ -38,6 +38,9 @@ public class PlayerBehavior : MonoBehaviour {
     private RaycastHit foliageSpawnRay;
     private Vector3 spawnPosition;
 
+    //Temp for quick release
+    [HideInInspector] public bool nearJurij;
+
     // Use this for initialization
     void Start () {
         //Movement
@@ -70,6 +73,9 @@ public class PlayerBehavior : MonoBehaviour {
         currentFoliageSpawnRadius = foliageSpawnRadius;
         currentFoliageDensity = foliageDensity;
         plants = new Transform[]{plant1, plant2, plant3, plant4, plant5, plant6};
+
+        ///
+        nearJurij = false;
     }
 
     // FixedUpdate is called once per physics update
