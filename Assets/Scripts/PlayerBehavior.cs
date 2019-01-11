@@ -117,7 +117,9 @@ public class PlayerBehavior : MonoBehaviour {
         //Actions
         /////////
         //Attacks
-        if (controls.attack1 && !animator.GetBool("Hurricane"))
+        if (controls.attack1 &&
+            GetComponent<PlayerBellBehavior>().maxPower >= 1 &&
+            !animator.GetBool("Hurricane"))
         {
             if (stamina < 0.2f)
             {
@@ -133,7 +135,9 @@ public class PlayerBehavior : MonoBehaviour {
                 kurentAudio.PlayAttack1();
             }
         }
-        if (controls.attack2 && !animator.GetBool("YMCA"))
+        if (controls.attack2 &&
+            GetComponent<PlayerBellBehavior>().maxPower >= 2 &&
+            !animator.GetBool("YMCA"))
         {
             if (stamina < 0.3f)
             {
@@ -149,11 +153,13 @@ public class PlayerBehavior : MonoBehaviour {
                 kurentAudio.PlayAttack2();
             }
         }
-        if (controls.attack3)
+        if (controls.attack3 &&
+            GetComponent<PlayerBellBehavior>().maxPower >= 3)
         {
             kurentAudio.PlayAttack3();
         }
-        if (controls.attack4)
+        if (controls.attack4 &&
+            GetComponent<PlayerBellBehavior>().maxPower >= 4)
         {
             kurentAudio.PlayAttack4();
         }

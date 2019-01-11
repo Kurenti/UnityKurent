@@ -20,7 +20,6 @@ public class ZeleniJurijBehavior : MonoBehaviour {
 	void Update () {
 		if (jurijEventStarted)
         {
-            Debug.Log("moving");
             if (jurijRemainingOffset > 0.0f)
             {
                 transform.position -= transform.forward * jurijRiseSpeed * Time.deltaTime;
