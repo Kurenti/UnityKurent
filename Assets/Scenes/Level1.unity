@@ -372,7 +372,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1778609693}
   m_LocalRotation: {x: -0, y: -0.74524546, z: -0, w: 0.6667903}
-  m_LocalPosition: {x: 169.78, y: 81.44, z: 278.78}
+  m_LocalPosition: {x: 169.78, y: 81.18, z: 278.78}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1052591611}
@@ -437,15 +437,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b88733a6f0077499476a13cd81e141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSpeed: 5
-  snowSpeed: 3
+  maxSpeed: 5
+  minSpeed: 3
   rotSpeed: 70
   foliageDensity: 0.8
   foliageSpawnRadius: 2
-  plant1: {fileID: 4333487733517554, guid: 6654bb7ccf720db4dac785c23d15ab36, type: 2}
-  plant2: {fileID: 4333487733517554, guid: 6654bb7ccf720db4dac785c23d15ab36, type: 2}
-  plant3: {fileID: 4553032625287444, guid: 470b60be178258842acfb6fe2fc3deed, type: 2}
-  plant4: {fileID: 4990112799990840, guid: 90fa74d42b821654182c39b93d7afb36, type: 2}
+  plant1: {fileID: 4885816207182992, guid: 4759912b8f9af7e4ea69640ef914c924, type: 2}
+  plant2: {fileID: 4189958123291452, guid: 55263750b94a032429d8338bd940dbb4, type: 2}
+  plant3: {fileID: 4853545178813120, guid: 2d648524cec2953419f99d6254742b2b, type: 2}
+  plant4: {fileID: 4843557424639118, guid: 2d7dea50202d2e8409725068578f047c, type: 2}
+  plant5: {fileID: 4201321450964860, guid: 099e39dcc23a62947b27ec08d19607bd, type: 2}
+  plant6: {fileID: 4038560878515876, guid: 138c27ba17a8a6440a66033d6a38e277, type: 2}
   currentFoliageSpawnRadius: 0
 --- !u!114 &1778609699
 MonoBehaviour:
@@ -460,8 +462,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _drawShader: {fileID: 4800000, guid: d1ce4b3b70155c745b537cf9e1d702ee, type: 3}
   renderTextureSize: 1024
-  brushSize: 5
-  brushStrength: 7
+  brushSize: 7
+  brushStrength: 2
   currentBrushSize: 0
 --- !u!1 &1970247576
 GameObject:

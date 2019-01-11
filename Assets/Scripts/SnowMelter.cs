@@ -63,13 +63,6 @@ public class SnowMelter : MonoBehaviour {
             Graphics.Blit(_splatMap, temp);
             Graphics.Blit(temp, _splatMap, _drawMaterial);
             RenderTexture.ReleaseTemporary(temp);
-
-            //Reduce move speed to snow speed - this now slows down across whole snow bounding box,
-            //but to be changed in next update!
-            GetComponent<PlayerBehavior>().setSnowSpeed();
-        } else {
-            //Set speed to ground speed
-            GetComponent<PlayerBehavior>().setGroundSpeed();
         }
 	}
 }

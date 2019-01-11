@@ -8,14 +8,16 @@ public class PlayerBehavior : MonoBehaviour {
     private Animator animator;
     private PlayerSnowBehavior psb;
 
+    //attributes
+    private float temperature;
+    private float stamina;
+
     [Header("Movement speed")]
-    public float groundSpeed;
-    public float snowSpeed;
+    public float maxSpeed;
+    public float minSpeed;
     public float rotSpeed;
 
     private float speed;
-    private float animSpeed;
-    private float animStartSpeed;
     
     [Header("Botany")]
     [Range(0, 1)] public float foliageDensity = 0.75f;
@@ -24,6 +26,8 @@ public class PlayerBehavior : MonoBehaviour {
     public Transform plant2;
     public Transform plant3;
     public Transform plant4;
+    public Transform plant5;
+    public Transform plant6;
 
     private Transform[] plants;
     [HideInInspector] public int currentFoliageSpawnRadius;
@@ -37,12 +41,9 @@ public class PlayerBehavior : MonoBehaviour {
         //////////
         controls = GetComponent<PlayerControls>();
         animator = GetComponentInChildren<Animator>();
+        speed = maxSpeed;
 
         psb = new PlayerSnowBehavior(null, null);
-
-        speed = groundSpeed;
-        //This is currently unused, further testing needed to see if actually improves gameplay
-        animStartSpeed = 0.2f;
 
         //Set up Foliage control
         ////////////////////////
@@ -65,55 +66,25 @@ public class PlayerBehavior : MonoBehaviour {
             }
         }
         currentFoliageSpawnRadius = foliageSpawnRadius;
-        plants = new Transform[]{plant1, plant2, plant3, plant4};
+        plants = new Transform[]{plant1, plant2, plant3, plant4, plant5, plant6};
     }
 
     // FixedUpdate is called once per physics update
     void FixedUpdate () {
-        Rigidbody rb = GetComponent<Rigidbody>();
 
+        //Dealing with controlls
+        ////////////////////////
+        ///
+        Rigidbody rb = GetComponent<Rigidbody>();
         //Movement
         //////////
-        
         //Forward-backward movement
         if (controls.moveDirection != 0) {
-
-            //Move position
             rb.MovePosition(transform.position +
                             transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
-            plantFoliage(transform.position);
-            
-            //Everything from here till setting animator "MoveSpeed" is currently not used, testing
-            //needed to see if it is actually needed
-            //Increase animation move speed
-            animSpeed += animStartSpeed * controls.moveDirection;
-
-            //Positive direction speed limiting
-            if (animSpeed > speed / groundSpeed)
-            {
-                //Case: just limit animSpeed to max 1 or 0.5
-                if (animSpeed - speed / groundSpeed <= animStartSpeed*2)
-                    animSpeed = speed / groundSpeed;
-                //Case: decay animSpeed from running to walking
-                else
-                    animSpeed -= animStartSpeed*2;
-            }
-            //Negative direction speed limiting
-            else if (animSpeed < -1)
-                animSpeed = -1;
-
-        } else {
-            animSpeed = animSpeed == 0 ? (animSpeed) :
-                            (animSpeed > 0 ? (Mathf.Max(0, animSpeed - animStartSpeed)) :
-                                             (Mathf.Min(0, animSpeed + animStartSpeed)));
         }
-
-        //This line ommits the above animSpeed stuff
-        animSpeed = controls.moveDirection;
-
         //Animate movement speed
-        animator.SetFloat("MoveSpeed", animSpeed);
-
+        animator.SetFloat("MoveSpeed", controls.moveDirection);
 
         //Turning left-right
         if (controls.turnDirection != 0) {
@@ -130,7 +101,6 @@ public class PlayerBehavior : MonoBehaviour {
 
         //Actions
         /////////
-
         //Attacks
         if (controls.attack1)
         {
@@ -138,21 +108,23 @@ public class PlayerBehavior : MonoBehaviour {
             GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
             currentFoliageSpawnRadius = foliageSpawnRadius + 2;
         }
-
         if (controls.attack2)
         {
             animator.SetBool("YMCA", true);
             GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
             currentFoliageSpawnRadius = foliageSpawnRadius + 2;
         }
-
         if (controls.attack3)
         {
         }
-
         if (controls.attack4)
         {
         }
+
+        //Gameplay updates
+        //////////////////
+        ///
+        plantFoliage(transform.position);
     }
 
     public void addBell(GameObject kurent, GameObject bell)
@@ -160,23 +132,11 @@ public class PlayerBehavior : MonoBehaviour {
         psb.addBell(kurent, bell);
     }
 
-    public void setGroundSpeed()
-    {
-        if (speed != groundSpeed)
-            speed = groundSpeed;
-    }
-
-    public void setSnowSpeed()
-    {
-        if (speed != snowSpeed)
-            speed = snowSpeed;
-    }
-
     private void plantFoliage(Vector3 position)
     {
         //Only plant new foliage if foliageMap at x, y permits it
         float foliageValue = foliageMap.GetPixel((int)position.x, (int)position.z).r;
-        if (foliageValue < 1.0f)
+        if (foliageValue < foliageDensity)
         {
             //Some random foliage generation
             //A pow4 is used as it gives a nice curve turning foliage density to
@@ -185,7 +145,7 @@ public class PlayerBehavior : MonoBehaviour {
                 //Increase red value in the foliage map
                 foliageMap.SetPixel((int)position.x, (int)position.z,
                                     new Color(Mathf.Min(
-                                        foliageValue + (1.01f - foliageDensity),
+                                        foliageValue + 0.05f,
                                         //1.01 so that even 1 increases foliage count
                                         1.0f),
                                     0.0f,
@@ -198,11 +158,16 @@ public class PlayerBehavior : MonoBehaviour {
                                             (int)position.z - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1));
                 Physics.Raycast(spawnPosition, Vector3.down, out foliageSpawnRay, 200.0f, LayerMask.GetMask("Terrain"));
                 spawnPosition.y = foliageSpawnRay.point.y;
-                //Random yaw
-                Quaternion spawnRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+                
+                //Random plant
+                int plantType = Random.Range(0, plants.Length);
 
-                //Generate plant
-                Instantiate(plants[Random.Range(0, plants.Length)], spawnPosition, spawnRotation);
+                //Random yaw
+                Quaternion spawnRotation = Quaternion.Euler(plants[plantType].localEulerAngles.x,
+                                                            Random.Range(0, 360),
+                                                            plants[plantType].localEulerAngles.z);
+
+                Instantiate(plants[plantType], spawnPosition + plants[plantType].position, spawnRotation);
             }
         }
     }
