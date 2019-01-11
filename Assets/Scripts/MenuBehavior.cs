@@ -51,7 +51,7 @@ public class MenuBehavior : MonoBehaviour {
 
 		deadTitle.gameObject.SetActive(false);
 		deadContent.gameObject.SetActive(false);
-	}
+    }
 
 	void HowToPlayClick() {
 		newGame.gameObject.SetActive(false);
@@ -75,7 +75,7 @@ public class MenuBehavior : MonoBehaviour {
 		howToPlayContent.gameObject.SetActive(false);
 	}
 
-	void Pause() {
+    public void Pause() {
 		canvas.SetActive(true);
 
 		newGame.gameObject.SetActive(false);
@@ -91,7 +91,7 @@ public class MenuBehavior : MonoBehaviour {
 		pauseResume.gameObject.SetActive(true);
 	}
 
-	void Unpause() {
+    public void Unpause() {
 		canvas.SetActive(false);
 
 		newGame.gameObject.SetActive(true);
@@ -107,7 +107,7 @@ public class MenuBehavior : MonoBehaviour {
 		pauseResume.gameObject.SetActive(false);
 	}
 
-	void Died() {
+	public void Died() {
 		canvas.SetActive(true);
 
 		newGame.gameObject.SetActive(true);

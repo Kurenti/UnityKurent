@@ -40,6 +40,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     //Temp for quick release
     [HideInInspector] public bool nearJurij;
+    [HideInInspector] public bool dead;
 
     // Use this for initialization
     void Start () {
@@ -76,6 +77,7 @@ public class PlayerBehavior : MonoBehaviour {
 
         ///
         nearJurij = false;
+        dead = false;
     }
 
     // FixedUpdate is called once per physics update
@@ -97,6 +99,10 @@ public class PlayerBehavior : MonoBehaviour {
         }
         //Animate movement speed
         animator.SetFloat("MoveSpeed", (speed/maxSpeed) * controls.moveDirection);
+        //Limit to terrain
+        if (!teren.GetComponent<Collider>().bounds.Contains(transform.position))
+            rb.MovePosition(transform.position -
+                            transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
 
         //Turning left-right
         if (controls.turnDirection != 0) {

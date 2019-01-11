@@ -14,9 +14,10 @@ public class LakeBehavior : MonoBehaviour {
 	void Update () {
 		
 	}
-
-		
+    
 	private void OnTriggerEnter(Collider other) {
-		SceneManager.LoadScene(1);
-	}
+        other.GetComponent<PlayerBehavior>().dead = true;
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

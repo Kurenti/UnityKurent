@@ -22,11 +22,25 @@ public class UIcontrol : MonoBehaviour {
         transform.GetChild(1).GetComponent<Slider>().value =
             player.GetComponent<PlayerBehavior>().temperature;
 
+        //Minimap
         if (player.GetComponent<PlayerControls>().minimap && !minimap.activeInHierarchy)
             minimap.SetActive(true);
-
         else if (!player.GetComponent<PlayerControls>().minimap && minimap.activeInHierarchy)
             minimap.SetActive(false);
 
+        //DeathScreen
+        if (player.GetComponent<PlayerBehavior>().dead)
+        {
+            player.GetComponent<PlayerBehavior>().dead = false;
+            transform.Find("StartMenuCanvas").gameObject.SetActive(true);
+            GetComponentInChildren<MenuBehavior>().Died();
+        }
+
+        //Pause
+        if (player.GetComponent<PlayerControls>().pause)
+        {
+            transform.Find("StartMenuCanvas").gameObject.SetActive(true);
+            GetComponentInChildren<MenuBehavior>().Pause();
+        }
     }
 }

@@ -14,6 +14,7 @@ public class PlayerControls : MonoBehaviour {
     [HideInInspector] public bool attack3;
     [HideInInspector] public bool attack4;
     [HideInInspector] public bool minimap;
+    [HideInInspector] public bool pause;
     private bool lastMinimapClick;
     private bool currentMinimapClick;
 
@@ -34,6 +35,8 @@ public class PlayerControls : MonoBehaviour {
         attack2 = Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.JoystickButton1);
         attack3 = Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.JoystickButton2);
         attack4 = Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.JoystickButton3);
+
+        pause = Input.GetKey(KeyCode.Escape);
 
         //Clunky makeshift on off logic here...
         lastMinimapClick = currentMinimapClick;
