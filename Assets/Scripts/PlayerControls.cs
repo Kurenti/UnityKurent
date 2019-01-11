@@ -8,6 +8,7 @@ public class PlayerControls : MonoBehaviour {
     [HideInInspector] public float moveDirection;
     [HideInInspector] public float turnDirection;
     [HideInInspector] public bool jump;
+    [HideInInspector] public bool interact;
     [HideInInspector] public bool attack1;
     [HideInInspector] public bool attack2;
     [HideInInspector] public bool attack3;
@@ -22,6 +23,7 @@ public class PlayerControls : MonoBehaviour {
         turnDirection = Input.GetAxis("Horizontal");
 
         jump = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.JoystickButton4);
+        interact = Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.JoystickButton5);
 
         attack1 = Input.GetKey(KeyCode.Alpha1) || Input.GetKey(KeyCode.JoystickButton0);
         attack2 = Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.JoystickButton1);

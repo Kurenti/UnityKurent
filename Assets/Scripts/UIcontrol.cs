@@ -14,7 +14,6 @@ public class UIcontrol : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(player.GetComponent<PlayerBehavior>().stamina);
         transform.GetChild(0).GetComponent<Slider>().value =
             player.GetComponent<PlayerBehavior>().stamina;
         transform.GetChild(1).GetComponent<Slider>().value =

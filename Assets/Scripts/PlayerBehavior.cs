@@ -6,7 +6,6 @@ public class PlayerBehavior : MonoBehaviour {
 
     private PlayerControls controls;
     private Animator animator;
-    private PlayerSnowBehavior psb;
     private AudioBehavior kurentAudio;
 
     //attributes
@@ -46,8 +45,7 @@ public class PlayerBehavior : MonoBehaviour {
         controls = GetComponent<PlayerControls>();
         animator = GetComponentInChildren<Animator>();
         speed = maxSpeed;
-
-        psb = new PlayerSnowBehavior(null, null);
+        
         kurentAudio = GetComponentInChildren<AudioBehavior>();
 
         //Gameplay atributes
@@ -191,16 +189,6 @@ public class PlayerBehavior : MonoBehaviour {
 
         //Try to plant foliage
         PlantFoliage(transform.position);
-    }
-
-    public void AddBell(GameObject kurent, GameObject bell)
-    {
-        psb.addBell(kurent, bell);
-        if (Random.Range(0,1) < 0.5) {
-            kurentAudio.PlayBell1();
-        } else {
-            kurentAudio.PlayBell2();
-        }
     }
 
     private void PlantFoliage(Vector3 position)
