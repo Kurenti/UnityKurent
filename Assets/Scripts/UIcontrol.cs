@@ -7,10 +7,13 @@ public class UIcontrol : MonoBehaviour {
 
     public GameObject player;
 
+    private GameObject minimap;
+
 	// Use this for initialization
 	void Start () {
-		
-	}
+        minimap = transform.Find("Minimap").gameObject;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,5 +21,12 @@ public class UIcontrol : MonoBehaviour {
             player.GetComponent<PlayerBehavior>().stamina;
         transform.GetChild(1).GetComponent<Slider>().value =
             player.GetComponent<PlayerBehavior>().temperature;
+
+        if (player.GetComponent<PlayerControls>().minimap && !minimap.activeInHierarchy)
+            minimap.SetActive(true);
+
+        else if (!player.GetComponent<PlayerControls>().minimap && minimap.activeInHierarchy)
+            minimap.SetActive(false);
+
     }
 }

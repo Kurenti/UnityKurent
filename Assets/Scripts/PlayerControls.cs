@@ -13,9 +13,14 @@ public class PlayerControls : MonoBehaviour {
     [HideInInspector] public bool attack2;
     [HideInInspector] public bool attack3;
     [HideInInspector] public bool attack4;
+    [HideInInspector] public bool minimap;
+    private bool lastMinimapClick;
+    private bool currentMinimapClick;
 
     // Use this for initialization
-    void Start () {}
+    void Start () {
+        minimap = true;
+    }
 
     // Update is called once per frame
     void Update() {
@@ -29,5 +34,14 @@ public class PlayerControls : MonoBehaviour {
         attack2 = Input.GetKey(KeyCode.Alpha2) || Input.GetKey(KeyCode.JoystickButton1);
         attack3 = Input.GetKey(KeyCode.Alpha3) || Input.GetKey(KeyCode.JoystickButton2);
         attack4 = Input.GetKey(KeyCode.Alpha4) || Input.GetKey(KeyCode.JoystickButton3);
+
+        //Clunky makeshift on off logic here...
+        lastMinimapClick = currentMinimapClick;
+        currentMinimapClick = Input.GetKey(KeyCode.M) || Input.GetKey(KeyCode.JoystickButton8);
+
+        if (lastMinimapClick && !currentMinimapClick)
+        {
+            minimap = !minimap;
+        }
     }
 }
