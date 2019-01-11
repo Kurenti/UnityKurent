@@ -21,6 +21,7 @@ public class EndAnimationHurricane : StateMachineBehaviour {
         animator.SetBool("Hurricane", false);
         animator.SetBool("YMCA", false);
         animator.GetComponentInParent<SnowMelter>().currentBrushSize = animator.GetComponentInParent<SnowMelter>().brushSize;
+        animator.GetComponentInParent<PlayerBehavior>().currentFoliageDensity = animator.GetComponentInParent<PlayerBehavior>().foliageDensity;
         animator.GetComponentInParent<PlayerBehavior>().currentFoliageSpawnRadius = animator.GetComponentInParent<PlayerBehavior>().foliageSpawnRadius;
     }
 

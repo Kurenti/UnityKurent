@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4885816207182992}
   - component: {fileID: 33289887299353754}
   - component: {fileID: 23133660974363314}
-  - component: {fileID: 114726057295387978}
+  - component: {fileID: 114837489981110594}
   m_Layer: 0
   m_Name: Roza1
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1815446862768832}
   m_Mesh: {fileID: 4300000, guid: be544642557d87e479a54d839164d4f3, type: 3}
---- !u!114 &114726057295387978
+--- !u!114 &114837489981110594
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

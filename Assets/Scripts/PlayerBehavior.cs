@@ -9,8 +9,9 @@ public class PlayerBehavior : MonoBehaviour {
     private PlayerSnowBehavior psb;
 
     //attributes
-    private float temperature;
-    private float stamina;
+    private float envTemperature;
+    [HideInInspector] public float temperature;
+    [HideInInspector] public float stamina;
 
     [Header("Movement speed")]
     public float maxSpeed;
@@ -30,6 +31,7 @@ public class PlayerBehavior : MonoBehaviour {
     public Transform plant6;
 
     private Transform[] plants;
+    [HideInInspector] public float currentFoliageDensity;
     [HideInInspector] public int currentFoliageSpawnRadius;
     private Terrain teren;
     private Texture2D foliageMap;
@@ -46,6 +48,11 @@ public class PlayerBehavior : MonoBehaviour {
 
         psb = new PlayerSnowBehavior(null, null);
 
+        //Gameplay atributes
+        ////////////////////
+        temperature = 0.5f;
+        stamina = 0.5f;
+
         //Set up Foliage control
         ////////////////////////
         teren = Terrain.activeTerrain;
@@ -61,6 +68,7 @@ public class PlayerBehavior : MonoBehaviour {
         foliageMap.SetPixels(texArray);
 
         currentFoliageSpawnRadius = foliageSpawnRadius;
+        currentFoliageDensity = foliageDensity;
         plants = new Transform[]{plant1, plant2, plant3, plant4, plant5, plant6};
     }
 
@@ -79,7 +87,7 @@ public class PlayerBehavior : MonoBehaviour {
                             transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
         }
         //Animate movement speed
-        animator.SetFloat("MoveSpeed", controls.moveDirection);
+        animator.SetFloat("MoveSpeed", (speed/maxSpeed) * controls.moveDirection);
 
         //Turning left-right
         if (controls.turnDirection != 0) {
@@ -89,8 +97,12 @@ public class PlayerBehavior : MonoBehaviour {
 
         //Jump
         if (controls.jump) {
-            animator.SetBool("Jump", true);
+            temperature += 0.02f;
             GetComponentInParent<SnowMelter>().currentBrushSize = 2* GetComponentInParent<SnowMelter>().brushSize;
+            currentFoliageDensity = foliageDensity + 0.3f * (1.0f - foliageDensity);
+            currentFoliageSpawnRadius = foliageSpawnRadius + 1;
+
+            animator.SetBool("Jump", true);
         }
 
 
@@ -99,15 +111,33 @@ public class PlayerBehavior : MonoBehaviour {
         //Attacks
         if (controls.attack1)
         {
-            animator.SetBool("Hurricane", true);
-            GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
-            currentFoliageSpawnRadius = foliageSpawnRadius + 2;
+            if (stamina < 0.06f)
+            {
+                NotEnoughStamina();
+            } else {
+                stamina -= 0.1f;
+                temperature += 0.06f;
+                GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
+                currentFoliageDensity = foliageDensity + 0.5f * (1.0f - foliageDensity);
+                currentFoliageSpawnRadius = foliageSpawnRadius + 3;
+
+                animator.SetBool("Hurricane", true);
+            }
         }
         if (controls.attack2)
         {
-            animator.SetBool("YMCA", true);
-            GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
-            currentFoliageSpawnRadius = foliageSpawnRadius + 2;
+            if (stamina < 0.1f)
+            {
+                NotEnoughStamina();
+            } else {
+                stamina -= 0.2f;
+                temperature += 0.1f;
+                GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
+                currentFoliageDensity = 1.0f;
+                currentFoliageSpawnRadius = foliageSpawnRadius + 3;
+
+                animator.SetBool("YMCA", true);
+            }
         }
         if (controls.attack3)
         {
@@ -119,29 +149,55 @@ public class PlayerBehavior : MonoBehaviour {
         //Gameplay updates
         //////////////////
         ///
-        plantFoliage(transform.position);
+        //Get environment temperature as avg snow count in an 11x11 block around player
+        Color[] surroundingSnow = foliageMap.GetPixels(
+            Mathf.Min(Mathf.Max((int)transform.position.x - 5, 0),
+                      (int)teren.terrainData.bounds.max.x - 11),
+            Mathf.Min(Mathf.Max((int)transform.position.z - 5, 0),
+                      (int)teren.terrainData.bounds.max.z - 11),
+            11, 11);
+
+        envTemperature = 0.0f;
+        for (var i = 0; i < surroundingSnow.Length; i++)
+        {
+            envTemperature += surroundingSnow[i].r;
+        }
+        envTemperature /= (surroundingSnow.Length * foliageDensity);
+        //Mathematically envTemp goes up to 1.0. But 0.05 is a more realistic number with
+        //how it's calculated and how foliageMap is drawn on
+        envTemperature = Mathf.Clamp(envTemperature, 0.0f, 0.05f);
+
+        //Atributes update
+        stamina += 0.05f * Time.fixedDeltaTime;
+        stamina = Mathf.Clamp(stamina, 0.0f, 1.0f);
+        temperature -= ((0.05f - envTemperature) / 0.05f) * 0.05f * Time.fixedDeltaTime;
+        temperature = Mathf.Clamp(temperature, 0.0f, 1.0f);
+        //Update move speed
+        speed = minSpeed + temperature * (maxSpeed - minSpeed);
+
+        //Try to plant foliage
+        PlantFoliage(transform.position);
     }
 
-    public void addBell(GameObject kurent, GameObject bell)
+    public void AddBell(GameObject kurent, GameObject bell)
     {
         psb.addBell(kurent, bell);
     }
 
-    private void plantFoliage(Vector3 position)
+    private void PlantFoliage(Vector3 position)
     {
         //Only plant new foliage if foliageMap at x, y permits it
         float foliageValue = foliageMap.GetPixel((int)position.x, (int)position.z).r;
-        if (foliageValue < foliageDensity)
+        if (foliageValue < currentFoliageDensity)
         {
             //Some random foliage generation
             //A pow4 is used as it gives a nice curve turning foliage density to
             //per-frame-spawn-propability at 0->0, 0.5->~0.05, 1.0->1.0
-            if (Random.value < Mathf.Pow(foliageDensity, 4)) {
+            if (Random.value < Mathf.Pow(currentFoliageDensity, 4)) {
                 //Increase red value in the foliage map
                 foliageMap.SetPixel((int)position.x, (int)position.z,
                                     new Color(Mathf.Min(
-                                        foliageValue + 0.05f,
-                                        //1.01 so that even 1 increases foliage count
+                                        foliageValue + 0.005f,
                                         1.0f),
                                     0.0f,
                                     0.0f));
@@ -164,5 +220,10 @@ public class PlayerBehavior : MonoBehaviour {
                 Instantiate(plants[plantType], spawnPosition + plants[plantType].position, spawnRotation);
             }
         }
+    }
+
+    private void NotEnoughStamina()
+    {
+
     }
 }

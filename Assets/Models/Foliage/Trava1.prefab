@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4189958123291452}
   - component: {fileID: 33951273569619404}
   - component: {fileID: 23698652685354182}
-  - component: {fileID: 114503618223955332}
+  - component: {fileID: 114801496939860830}
   m_Layer: 0
   m_Name: Trava1
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1708684838386412}
   m_Mesh: {fileID: 4300000, guid: f0f14c5f5005e2d4abcff7bd1b18c54d, type: 3}
---- !u!114 &114503618223955332
+--- !u!114 &114801496939860830
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

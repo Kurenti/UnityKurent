@@ -11,7 +11,8 @@ public class FoliageGrowth : MonoBehaviour {
     private Vector3 endScale;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         yOffset = 0.3f;
         endScale = transform.localScale * (1 + sizeVariance * (Random.value * 2 - 1));
         transform.localScale = Vector3.zero;
