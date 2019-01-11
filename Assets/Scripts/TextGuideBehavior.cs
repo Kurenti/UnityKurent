@@ -121,7 +121,7 @@ public class TextGuideBehavior : MonoBehaviour {
 		return true;
 	}
 
-	void StartOpening() {
+	public void StartOpening() {
         if (!pack1Done)
         {
             opening = true;
@@ -131,7 +131,7 @@ public class TextGuideBehavior : MonoBehaviour {
         }
 	}
 
-	void StartDancingOne() {
+	public void StartDancingOne() {
 		if (pack1Done && !pack2Done) {
 			dancingOne = true;
             opening = false;
@@ -142,7 +142,7 @@ public class TextGuideBehavior : MonoBehaviour {
         }
 	}
 
-	void StartBigBell()
+	public void StartBigBell()
     {
         if (pack1Done && pack2Done && !pack3Done) {
 			bigBell = true;
@@ -155,7 +155,7 @@ public class TextGuideBehavior : MonoBehaviour {
         }
     }
 
-    void StartEnd()
+    public void StartEnd()
     {
         if (pack1Done && pack2Done && pack3Done && !pack4Done)
         {
