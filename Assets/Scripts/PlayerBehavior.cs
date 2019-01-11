@@ -96,8 +96,8 @@ public class PlayerBehavior : MonoBehaviour {
         }
 
         //Jump
-        if (controls.jump) {
-            temperature += 0.02f;
+        if (controls.jump && !animator.GetBool("Jump")) {
+            temperature += 0.14f;
             GetComponentInParent<SnowMelter>().currentBrushSize = 2* GetComponentInParent<SnowMelter>().brushSize;
             currentFoliageDensity = foliageDensity + 0.3f * (1.0f - foliageDensity);
             currentFoliageSpawnRadius = foliageSpawnRadius + 1;
@@ -109,14 +109,14 @@ public class PlayerBehavior : MonoBehaviour {
         //Actions
         /////////
         //Attacks
-        if (controls.attack1)
+        if (controls.attack1 && !animator.GetBool("Hurricane"))
         {
-            if (stamina < 0.06f)
+            if (stamina < 0.2f)
             {
                 NotEnoughStamina();
             } else {
-                stamina -= 0.1f;
-                temperature += 0.06f;
+                stamina -= 0.2f;
+                temperature += 0.2f;
                 GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
                 currentFoliageDensity = foliageDensity + 0.5f * (1.0f - foliageDensity);
                 currentFoliageSpawnRadius = foliageSpawnRadius + 3;
@@ -124,14 +124,14 @@ public class PlayerBehavior : MonoBehaviour {
                 animator.SetBool("Hurricane", true);
             }
         }
-        if (controls.attack2)
+        if (controls.attack2 && !animator.GetBool("YMCA"))
         {
-            if (stamina < 0.1f)
+            if (stamina < 0.3f)
             {
                 NotEnoughStamina();
             } else {
-                stamina -= 0.2f;
-                temperature += 0.1f;
+                stamina -= 0.3f;
+                temperature += 0.3f;
                 GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
                 currentFoliageDensity = 1.0f;
                 currentFoliageSpawnRadius = foliageSpawnRadius + 3;
