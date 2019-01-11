@@ -31,6 +31,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private Transform[] plants;
     [HideInInspector] public int currentFoliageSpawnRadius;
+    private Terrain teren;
     private Texture2D foliageMap;
     private RaycastHit foliageSpawnRay;
     private Vector3 spawnPosition;
@@ -47,24 +48,18 @@ public class PlayerBehavior : MonoBehaviour {
 
         //Set up Foliage control
         ////////////////////////
-        //Foliage map relies on landscape having a corner in 0,y,0 and expanding in +x, +z
-        var allObjects = FindObjectsOfType(typeof(GameObject));
-        foreach (GameObject obj in allObjects)
-        {
-            if (obj.layer == LayerMask.NameToLayer("Terrain"))
-            {
-                foliageMap = new Texture2D((int)Mathf.Floor(obj.GetComponent<Renderer>().bounds.size.x),
-                                           (int)Mathf.Floor(obj.GetComponent<Renderer>().bounds.size.z));
-                Color blackCol = new Color(0, 0, 0);
-                var texArray = foliageMap.GetPixels();
-                for (var i = 0; i < texArray.Length; i++)
-                {
-                    texArray[i] = blackCol;
-                }
-                foliageMap.SetPixels(texArray);
-                break;
-            }
+        teren = Terrain.activeTerrain;
+
+        foliageMap = new Texture2D((int)Mathf.Floor(teren.terrainData.size.x),
+                                   (int)Mathf.Floor(teren.terrainData.size.z));
+
+        Color blackCol = new Color(0, 0, 0);
+        Color[] texArray = foliageMap.GetPixels();
+        for (var i = 0; i < texArray.Length; i++) {
+            texArray[i] = blackCol;
         }
+        foliageMap.SetPixels(texArray);
+
         currentFoliageSpawnRadius = foliageSpawnRadius;
         plants = new Transform[]{plant1, plant2, plant3, plant4, plant5, plant6};
     }
@@ -154,11 +149,10 @@ public class PlayerBehavior : MonoBehaviour {
                 //Generate random spawn point around player (this can spawn foliage outside of landscape at y zero)
                 //SpawnRadius 1 gives 1 square, 2 gives 3*3, 3 gives 5*5...
                 spawnPosition = new Vector3((int)position.x - (currentFoliageSpawnRadius - 1) + Random.value * (2*currentFoliageSpawnRadius - 1),
-                                            200.0f,
+                                            0.0f,
                                             (int)position.z - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1));
-                Physics.Raycast(spawnPosition, Vector3.down, out foliageSpawnRay, 200.0f, LayerMask.GetMask("Terrain"));
-                spawnPosition.y = foliageSpawnRay.point.y;
-                
+                spawnPosition.y = teren.SampleHeight(spawnPosition);
+
                 //Random plant
                 int plantType = Random.Range(0, plants.Length);
 
