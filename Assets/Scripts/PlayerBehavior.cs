@@ -7,6 +7,7 @@ public class PlayerBehavior : MonoBehaviour {
     private PlayerControls controls;
     private Animator animator;
     private PlayerSnowBehavior psb;
+    private AudioBehavior kurentAudio;
 
     //attributes
     private float envTemperature;
@@ -47,6 +48,7 @@ public class PlayerBehavior : MonoBehaviour {
         speed = maxSpeed;
 
         psb = new PlayerSnowBehavior(null, null);
+        kurentAudio = GetComponentInChildren<AudioBehavior>();
 
         //Gameplay atributes
         ////////////////////
@@ -85,6 +87,9 @@ public class PlayerBehavior : MonoBehaviour {
         if (controls.moveDirection != 0) {
             rb.MovePosition(transform.position +
                             transform.forward * speed * Time.fixedDeltaTime * controls.moveDirection);
+            kurentAudio.PlaySteps();
+        } else {
+            kurentAudio.StopSteps();
         }
         //Animate movement speed
         animator.SetFloat("MoveSpeed", (speed/maxSpeed) * controls.moveDirection);
@@ -103,6 +108,11 @@ public class PlayerBehavior : MonoBehaviour {
             currentFoliageSpawnRadius = foliageSpawnRadius + 1;
 
             animator.SetBool("Jump", true);
+            if (controls.moveDirection != 0) {
+                kurentAudio.PlayJump(0f);
+            } else {
+                kurentAudio.PlayJump(1f);
+            }
         }
 
 
@@ -122,6 +132,7 @@ public class PlayerBehavior : MonoBehaviour {
                 currentFoliageSpawnRadius = foliageSpawnRadius + 3;
 
                 animator.SetBool("Hurricane", true);
+                kurentAudio.PlayAttack1();
             }
         }
         if (controls.attack2 && !animator.GetBool("YMCA"))
@@ -137,13 +148,16 @@ public class PlayerBehavior : MonoBehaviour {
                 currentFoliageSpawnRadius = foliageSpawnRadius + 3;
 
                 animator.SetBool("YMCA", true);
+                kurentAudio.PlayAttack2();
             }
         }
         if (controls.attack3)
         {
+            kurentAudio.PlayAttack3();
         }
         if (controls.attack4)
         {
+            kurentAudio.PlayAttack4();
         }
 
         //Gameplay updates
@@ -182,6 +196,11 @@ public class PlayerBehavior : MonoBehaviour {
     public void AddBell(GameObject kurent, GameObject bell)
     {
         psb.addBell(kurent, bell);
+        if (Random.Range(0,1) < 0.5) {
+            kurentAudio.PlayBell1();
+        } else {
+            kurentAudio.PlayBell2();
+        }
     }
 
     private void PlantFoliage(Vector3 position)
