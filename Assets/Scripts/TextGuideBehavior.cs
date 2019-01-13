@@ -110,7 +110,7 @@ public class TextGuideBehavior : MonoBehaviour {
 	}
 
 	bool UpdateGuide() {
-		if (delays[Mathf.Min(index, lines.Length)] < Time.time - startTime) {
+		if (delays[Mathf.Min(index, delays.Length)] < Time.time - startTime) {
 			guide.text = lines[Mathf.Min(index, lines.Length)];
 			if (index == lines.Length - 1) {
 				return false;

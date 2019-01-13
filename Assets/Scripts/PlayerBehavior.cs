@@ -125,6 +125,10 @@ public class PlayerBehavior : MonoBehaviour {
             }
         }
 
+        //Interact
+        if (controls.interact && !animator.GetBool("Interact"))
+            animator.SetBool("Interact", true);
+
 
         //Actions
         /////////
