@@ -3979,15 +3979,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4484136127832270, guid: 17c6a06ef07db154b83384fbdf2bbb1a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 3.8922439
+      value: 3.93
       objectReference: {fileID: 0}
     - target: {fileID: 4484136127832270, guid: 17c6a06ef07db154b83384fbdf2bbb1a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -7.5183845
+      value: -5.53
       objectReference: {fileID: 0}
     - target: {fileID: 4484136127832270, guid: 17c6a06ef07db154b83384fbdf2bbb1a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -19.633245
+      value: -17.15
       objectReference: {fileID: 0}
     - target: {fileID: 4484136127832270, guid: 17c6a06ef07db154b83384fbdf2bbb1a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4324,15 +4324,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 71a3905004ee4cb4e80dfd08b46404b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 134.48
+      value: 133.88
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 71a3905004ee4cb4e80dfd08b46404b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 35.82
+      value: 36.02
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 71a3905004ee4cb4e80dfd08b46404b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 239.95
+      value: 240.52
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 71a3905004ee4cb4e80dfd08b46404b6, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4639,7 +4639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2faa80938e2db764fb97a165503bf966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foliageDensity: 0.5
+  foliageDensity: 1
   foliageSpawnRadius: 2
   plant1: {fileID: 4885816207182992, guid: 4759912b8f9af7e4ea69640ef914c924, type: 2}
   plant2: {fileID: 4189958123291452, guid: 55263750b94a032429d8338bd940dbb4, type: 2}
@@ -4649,6 +4649,7 @@ MonoBehaviour:
   plant6: {fileID: 4038560878515876, guid: 138c27ba17a8a6440a66033d6a38e277, type: 2}
   currentFoliageDensity: 0
   currentFoliageSpawnRadius: 0
+  teren: {fileID: 0}
 --- !u!114 &1778609699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4693,16 +4694,6 @@ MonoBehaviour:
   maxSpeed: 5
   minSpeed: 3
   rotSpeed: 70
-  foliageDensity: 0.5
-  foliageSpawnRadius: 2
-  plant1: {fileID: 4885816207182992, guid: 4759912b8f9af7e4ea69640ef914c924, type: 2}
-  plant2: {fileID: 4189958123291452, guid: 55263750b94a032429d8338bd940dbb4, type: 2}
-  plant3: {fileID: 4853545178813120, guid: 2d648524cec2953419f99d6254742b2b, type: 2}
-  plant4: {fileID: 4843557424639118, guid: 2d7dea50202d2e8409725068578f047c, type: 2}
-  plant5: {fileID: 4201321450964860, guid: 099e39dcc23a62947b27ec08d19607bd, type: 2}
-  plant6: {fileID: 4038560878515876, guid: 138c27ba17a8a6440a66033d6a38e277, type: 2}
-  currentFoliageDensity: 0
-  currentFoliageSpawnRadius: 0
   nearJurij: 0
   dead: 0
 --- !u!1 &1789502500
@@ -9664,7 +9655,7 @@ MeshFilter:
     type: 3}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1971640690}
-  m_Mesh: {fileID: 4300000, guid: c42c2ecd9a69174498bb034e5817ba9c, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 9607a701f677c684a861f02bb45dfd3a, type: 3}
 --- !u!4 &1971640695
 Transform:
   m_ObjectHideFlags: 0

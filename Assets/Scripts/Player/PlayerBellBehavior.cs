@@ -17,13 +17,6 @@ public class PlayerBellBehavior : MonoBehaviour
         if (this.maxPower < bell.GetComponent<BellBehavior>().power)
         {
             this.maxPower = bell.GetComponent<BellBehavior>().power;
-
-            //PlayerStuff
-            if (this.maxPower == 2)
-            {
-                GetComponent<PlayerFoliage>().foliageSpawnRadius *= 2;
-                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius;
-            }
         }
 
         //Visuals

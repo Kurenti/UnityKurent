@@ -76,10 +76,7 @@ public class PlayerBehavior : MonoBehaviour {
         if (controls.jump && !animator.GetBool("Jump")) {
             temperature += 0.14f;
             GetComponentInParent<SnowMelter>().currentBrushSize = 2* GetComponentInParent<SnowMelter>().brushSize;
-            GetComponent<PlayerFoliage>().currentFoliageDensity =
-                GetComponent<PlayerFoliage>().foliageDensity +
-                0.3f * (1.0f - GetComponent<PlayerFoliage>().foliageDensity);
-            GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 1;
+            GetComponent<PlayerFoliage>().PlantFoliage(1);
 
             animator.SetBool("Jump", true);
             if (controls.moveDirection != 0) {
@@ -92,8 +89,7 @@ public class PlayerBehavior : MonoBehaviour {
         //Interact
         if (controls.interact && !animator.GetBool("Interact"))
             animator.SetBool("Interact", true);
-
-
+        
         //Actions
         /////////
         //Attacks
@@ -108,10 +104,8 @@ public class PlayerBehavior : MonoBehaviour {
                 stamina -= 0.2f;
                 temperature += 0.2f;
                 GetComponentInParent<SnowMelter>().currentBrushSize = 3 * GetComponentInParent<SnowMelter>().brushSize;
-                GetComponent<PlayerFoliage>().currentFoliageDensity =
-                    GetComponent<PlayerFoliage>().foliageDensity +
-                    0.5f * (1.0f - GetComponent<PlayerFoliage>().foliageDensity);
-                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 3;
+                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 1;
+                GetComponent<PlayerFoliage>().PlantFoliage(2);
 
                 animator.SetBool("Hurricane", true);
                 kurentAudio.PlayAttack1();
@@ -128,8 +122,8 @@ public class PlayerBehavior : MonoBehaviour {
                 stamina -= 0.3f;
                 temperature += 0.3f;
                 GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
-                GetComponent<PlayerFoliage>().currentFoliageDensity = 1.0f;
-                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 3;
+                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 1;
+                GetComponent<PlayerFoliage>().PlantFoliage(3);
 
                 animator.SetBool("YMCA", true);
                 kurentAudio.PlayAttack2();
@@ -159,7 +153,7 @@ public class PlayerBehavior : MonoBehaviour {
         speed = minSpeed + temperature * (maxSpeed - minSpeed);
 
         //Try to plant foliage
-        GetComponent<PlayerFoliage>().PlantFoliage(transform.position);
+        GetComponent<PlayerFoliage>().PlantFoliage(0);
     }
 
     private void NotEnoughStamina()

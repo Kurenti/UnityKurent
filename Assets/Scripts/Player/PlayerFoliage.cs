@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerFoliage : MonoBehaviour {
 
+    //Foliage density:
+    //  max plants / 1*1 square = foliageDensity * 100
+    //  probabilty of plant / 0.2s = foliageDensity
     [Range(0, 1)] public float foliageDensity = 0.75f;
     [Range(1, 5)] public int foliageSpawnRadius = 1;
     public Transform plant1;
@@ -20,6 +23,7 @@ public class PlayerFoliage : MonoBehaviour {
     [HideInInspector] private Texture2D foliageMap;
     private RaycastHit foliageSpawnRay;
     private Vector3 spawnPosition;
+    private List<Vector3> spawnPositions;
     private float envTemperature;
 
     // Use this for initialization
@@ -42,6 +46,7 @@ public class PlayerFoliage : MonoBehaviour {
         currentFoliageSpawnRadius = foliageSpawnRadius;
         currentFoliageDensity = foliageDensity;
         plants = new Transform[] { plant1, plant2, plant3, plant4, plant5, plant6 };
+        spawnPositions = new List<Vector3>();
     }
 
     // Update is called once per frame
@@ -49,32 +54,78 @@ public class PlayerFoliage : MonoBehaviour {
 		
 	}
 
-    public void PlantFoliage(Vector3 position)
+    public void PlantFoliage(int forceBlop)
     {
+        spawnPositions.Clear();
+        //Force blop is used to quickly set up massive 
         //Only plant new foliage if foliageMap at x, y permits it
-        float foliageValue = foliageMap.GetPixel((int)position.x, (int)position.z).r;
+        float foliageValue = foliageMap.GetPixel((int)transform.position.x, (int)transform.position.z).r;
         if (foliageValue < currentFoliageDensity)
         {
-            //Some random foliage generation
-            //A pow4 is used as it gives a nice curve turning foliage density to
-            //per-frame-spawn-propability at 0->0, 0.5->~0.05, 1.0->1.0
-            if (Random.value < Mathf.Pow(currentFoliageDensity, 4))
+            if (forceBlop == 0)
             {
-                //Increase red value in the foliage map
-                foliageMap.SetPixel((int)position.x, (int)position.z,
-                                    new Color(Mathf.Min(
-                                        foliageValue + 0.005f,
-                                        1.0f),
-                                    0.0f,
-                                    0.0f));
+                //Some random foliage generation
+                //A pow4 is used as it gives a nice curve turning foliage density to
+                //per-frame-spawn-propability at 0->0, 0.5->~0.05, 1.0->1.0
+                if (Random.value * Time.fixedDeltaTime < currentFoliageDensity * 0.2f)
+                {
+                    //Generate random spawn point around player (this can spawn foliage outside of landscape at y zero)
+                    //SpawnRadius 1 gives 1 square, 2 gives 3*3, 3 gives 5*5...
+                    spawnPosition = new Vector3((int)transform.position.x - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1),
+                                                0.0f,
+                                                (int)transform.position.z - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1));
+                    spawnPosition.y = teren.SampleHeight(spawnPosition);
 
-                //Generate random spawn point around player (this can spawn foliage outside of landscape at y zero)
-                //SpawnRadius 1 gives 1 square, 2 gives 3*3, 3 gives 5*5...
-                spawnPosition = new Vector3((int)position.x - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1),
-                                            0.0f,
-                                            (int)position.z - (currentFoliageSpawnRadius - 1) + Random.value * (2 * currentFoliageSpawnRadius - 1));
-                spawnPosition.y = teren.SampleHeight(spawnPosition);
+                    //Increase red value in the foliage map
+                    foliageMap.SetPixel((int)spawnPosition.x, (int)spawnPosition.z,
+                                        new Color(Mathf.Min(foliageValue + 0.01f,
+                                                            1.0f),
+                                                  0.0f,
+                                                  0.0f));
+                    spawnPositions.Add(spawnPosition);
+                }
+            } else {
+                float densityFill = 1.0f;
+                if (forceBlop == 1)
+                    densityFill = foliageDensity / 4.0f;
+                if (forceBlop == 2)
+                    densityFill = foliageDensity / 2.0f;
+                if (forceBlop == 3)
+                    densityFill = foliageDensity * 3.0f / 4.0f;
 
+
+                //Cover the whole foliageSpawnRadius quadrant
+                for (var zI = 0; zI < (2 * currentFoliageSpawnRadius - 1); zI++)
+                {
+                    for (var xI = 0; xI < (2 * currentFoliageSpawnRadius - 1); xI++)
+                    {
+                        //Reread foliage
+                        foliageValue = foliageMap.GetPixel((int)transform.position.x, (int)transform.position.z).r;
+
+                        //Find number of needed plants
+                        int numberOfPlants = (int)((densityFill * ((currentFoliageSpawnRadius - Mathf.Abs(xI - (currentFoliageSpawnRadius - 1)))
+                                                                +  (currentFoliageSpawnRadius - Mathf.Abs(zI - (currentFoliageSpawnRadius - 1))))/(2*currentFoliageSpawnRadius)
+                                                    - foliageValue) * 100);
+
+                        //spawn a small blop of plants under player
+                        for (var j = 0; j < numberOfPlants; j++)
+                        {
+                            spawnPosition = new Vector3((int)transform.position.x - (currentFoliageSpawnRadius - 1) + xI + Random.value,
+                                                        0.0f,
+                                                        (int)transform.position.z - (currentFoliageSpawnRadius - 1) + zI + Random.value);
+                            spawnPosition.y = teren.SampleHeight(spawnPosition);
+                            spawnPositions.Add(spawnPosition);
+                        }
+                        //Increase red value in the foliage map
+                        foliageMap.SetPixel((int)spawnPosition.x, (int)spawnPosition.z,
+                                            new Color(Mathf.Max(densityFill, foliageValue), 0.0f, 0.0f));
+                    }
+                }
+            }
+
+            //Spawn all needed plants
+            for (var i = 0; i < spawnPositions.Count; i++)
+            {
                 //Random plant
                 int plantType = Random.Range(0, plants.Length);
 
@@ -82,8 +133,8 @@ public class PlayerFoliage : MonoBehaviour {
                 Quaternion spawnRotation = Quaternion.Euler(plants[plantType].localEulerAngles.x,
                                                             Random.Range(0, 360),
                                                             plants[plantType].localEulerAngles.z);
-
-                Instantiate(plants[plantType], spawnPosition + plants[plantType].position, spawnRotation);
+                //Plant
+                Instantiate(plants[plantType], spawnPositions[i] + plants[plantType].position, spawnRotation);
             }
         }
     }

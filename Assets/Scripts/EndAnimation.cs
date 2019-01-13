@@ -22,7 +22,6 @@ public class EndAnimation : StateMachineBehaviour {
         animator.SetBool("YMCA", false);
         animator.SetBool("Interact", false);
         animator.GetComponentInParent<SnowMelter>().currentBrushSize = animator.GetComponentInParent<SnowMelter>().brushSize;
-        animator.GetComponentInParent<PlayerFoliage>().currentFoliageDensity = animator.GetComponentInParent<PlayerFoliage>().foliageDensity;
         animator.GetComponentInParent<PlayerFoliage>().currentFoliageSpawnRadius = animator.GetComponentInParent<PlayerFoliage>().foliageSpawnRadius;
     }
 
