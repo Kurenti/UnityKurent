@@ -22,8 +22,8 @@ public class EndAnimation : StateMachineBehaviour {
         animator.SetBool("YMCA", false);
         animator.SetBool("Interact", false);
         animator.GetComponentInParent<SnowMelter>().currentBrushSize = animator.GetComponentInParent<SnowMelter>().brushSize;
-        animator.GetComponentInParent<PlayerBehavior>().currentFoliageDensity = animator.GetComponentInParent<PlayerBehavior>().foliageDensity;
-        animator.GetComponentInParent<PlayerBehavior>().currentFoliageSpawnRadius = animator.GetComponentInParent<PlayerBehavior>().foliageSpawnRadius;
+        animator.GetComponentInParent<PlayerFoliage>().currentFoliageDensity = animator.GetComponentInParent<PlayerFoliage>().foliageDensity;
+        animator.GetComponentInParent<PlayerFoliage>().currentFoliageSpawnRadius = animator.GetComponentInParent<PlayerFoliage>().foliageSpawnRadius;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
