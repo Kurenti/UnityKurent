@@ -107,6 +107,9 @@ public class PlayerFoliage : MonoBehaviour {
                                                                 +  (currentFoliageSpawnRadius - Mathf.Abs(zI - (currentFoliageSpawnRadius - 1))))/(2*currentFoliageSpawnRadius)
                                                     - foliageValue) * 100);
 
+                        if (numberOfPlants < 1)
+                            numberOfPlants = 0;
+
                         //spawn a small blop of plants under player
                         for (var j = 0; j < numberOfPlants; j++)
                         {
@@ -139,13 +142,13 @@ public class PlayerFoliage : MonoBehaviour {
         }
     }
 
-    public float GetEnvironmentTemperature()
+    public float GetEnvironmentTemperature(Vector3 pos)
     {
         //Get environment temperature as avg snow count in an 11x11 block around player
         Color[] surroundingSnow = GetComponent<PlayerFoliage>().foliageMap.GetPixels(
-            Mathf.Min(Mathf.Max((int)transform.position.x - 5, 0),
+            Mathf.Min(Mathf.Max((int)pos.x - 5, 0),
                       (int)GetComponent<PlayerFoliage>().teren.terrainData.bounds.max.x - 11),
-            Mathf.Min(Mathf.Max((int)transform.position.z - 5, 0),
+            Mathf.Min(Mathf.Max((int)pos.z - 5, 0),
                       (int)GetComponent<PlayerFoliage>().teren.terrainData.bounds.max.z - 11),
             11, 11);
 
@@ -155,9 +158,10 @@ public class PlayerFoliage : MonoBehaviour {
             envTemperature += surroundingSnow[i].r;
         }
         envTemperature /= (surroundingSnow.Length * foliageDensity);
-        //Mathematically envTemp goes up to 1.0. But 0.05 is a more realistic number with
+        //Mathematically envTemp goes up to 1.0. But 0.9 is a more realistic number with
         //how it's calculated and how foliageMap is drawn on
-        envTemperature = Mathf.Clamp(envTemperature, 0.0f, 0.05f);
+        envTemperature = Mathf.Clamp(envTemperature, 0.0f, 0.9f);
+
         return envTemperature;
     }
 }

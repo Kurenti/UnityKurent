@@ -20,6 +20,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     //Temp for quick release
     [HideInInspector] public bool nearJurij;
+    [HideInInspector] public bool cleanJurij;
     [HideInInspector] public bool dead;
 
     // Use this for initialization
@@ -122,7 +123,7 @@ public class PlayerBehavior : MonoBehaviour {
                 stamina -= 0.3f;
                 temperature += 0.3f;
                 GetComponentInParent<SnowMelter>().currentBrushSize = 4 * GetComponentInParent<SnowMelter>().brushSize;
-                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 1;
+                GetComponent<PlayerFoliage>().currentFoliageSpawnRadius = GetComponent<PlayerFoliage>().foliageSpawnRadius + 2;
                 GetComponent<PlayerFoliage>().PlantFoliage(3);
 
                 animator.SetBool("YMCA", true);
@@ -146,7 +147,7 @@ public class PlayerBehavior : MonoBehaviour {
         //Atributes update
         stamina += 0.05f * Time.fixedDeltaTime;
         stamina = Mathf.Clamp(stamina, 0.0f, 1.0f);
-        temperature -= ((0.05f - GetComponent<PlayerFoliage>().GetEnvironmentTemperature()) / 0.05f) *
+        temperature -= ((0.9f - GetComponent<PlayerFoliage>().GetEnvironmentTemperature(transform.position)) / 0.9f) *
                         0.05f * Time.fixedDeltaTime;
         temperature = Mathf.Clamp(temperature, 0.0f, 1.0f);
         //Update move speed

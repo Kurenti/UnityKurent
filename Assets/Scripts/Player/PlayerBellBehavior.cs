@@ -26,7 +26,7 @@ public class PlayerBellBehavior : MonoBehaviour
 			this.leftBell = bell;
 			bell.transform.parent = transform.Find("Kurent").Find("mixamorig:Hips").Find("mixamorig:LeftUpLeg");
             bell.transform.localPosition = new Vector3(0.126f, 0.036f, 0.015f);
-            bell.transform.eulerAngles = new Vector3(24.246f, -8.545f, -2.107f);
+            bell.transform.eulerAngles = new Vector3(-10.0f, 35.0f, -15.0f);
         }
         else if (this.rightBell == null)
         {

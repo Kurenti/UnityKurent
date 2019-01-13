@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class TextGuideBehavior : MonoBehaviour {
 
-	public Text guide;
-
+    private Text guide;
     private GameObject player;
 
 	private float startTime;
@@ -43,8 +42,18 @@ public class TextGuideBehavior : MonoBehaviour {
 	private bool dancingOne = false;
     private bool pack2Done = false;
 
+    private string[] JURIJ_LINES = {
+        "To je Zeleni Jurij, dobri duh narave!",
+        "Reši ga iz kupa snega.",
+        ""
+    };
+    private float[] JURIJ_DELAY = {
+        0, 3, 5
+    };
+    private bool jurij = false;
+    private bool pack3Done = false;
+
     private string[] BIG_BELL_LINES = {
-		"To je Zeleni Jurij, dobri duh narave!",
         "\"Pogumni kurent, ki koračiš v mraz in sneg!\"",
         "\"Čas je, da se narava prebudi...\"",
         "\"Na, vzemi ta zvonec, preženi mraz!\"",
@@ -52,10 +61,10 @@ public class TextGuideBehavior : MonoBehaviour {
         ""
 	};
 	private float[] BIG_BELL_DELAY = {
-        0, 3, 6, 9, 12, 15
+        0, 3, 6, 9, 12
     };
 	private bool bigBell = false;
-    private bool pack3Done = false;
+    private bool pack4Done = false;
 
     private string[] END_LINES = {
         "Sedaj si popolno opremnljen za premagovanje zime.",
@@ -66,13 +75,13 @@ public class TextGuideBehavior : MonoBehaviour {
         0, 3, 6
     };
     private bool endMsg = false;
-    private bool pack4Done = false;
+    private bool pack5Done = false;
 
     // Use this for initialization
     void Start () {
+        guide = GetComponent<Text>();
 		startTime = Time.time;
         player = GetComponentInParent<UIcontrol>().player;
-		StartOpening();
 	}
 
     // Update is called once per frame
@@ -86,6 +95,8 @@ public class TextGuideBehavior : MonoBehaviour {
         if (player.GetComponent<PlayerBellBehavior>().maxPower >= 1)
             StartDancingOne();
         if (player.GetComponent<PlayerBehavior>().nearJurij)
+            StartJurij();
+        if (player.GetComponent<PlayerBehavior>().cleanJurij)
             StartBigBell();
         if (player.GetComponent<PlayerBellBehavior>().maxPower >= 2)
             StartEnd();
@@ -98,7 +109,11 @@ public class TextGuideBehavior : MonoBehaviour {
             lines = BIG_BELL_LINES;
             delays = BIG_BELL_DELAY;
             bigBell = UpdateGuide();
-		} else if (dancingOne) {
+        } else if (jurij) {
+            lines = JURIJ_LINES;
+            delays = JURIJ_DELAY;
+            jurij = UpdateGuide();
+        } else if (dancingOne) {
 			lines = DANCING_LINES_ONE;
 			delays = DANCING_DELAYS_ONE;
 			dancingOne = UpdateGuide();
@@ -140,12 +155,13 @@ public class TextGuideBehavior : MonoBehaviour {
             pack2Done = true;
 
         }
-	}
+    }
 
-	public void StartBigBell()
+    public void StartJurij()
     {
-        if (pack1Done && pack2Done && !pack3Done) {
-			bigBell = true;
+        if (pack1Done && pack2Done && !pack3Done)
+        {
+            jurij = true;
             dancingOne = false;
             opening = false;
 
@@ -155,17 +171,32 @@ public class TextGuideBehavior : MonoBehaviour {
         }
     }
 
-    public void StartEnd()
+    public void StartBigBell()
     {
-        if (pack1Done && pack2Done && pack3Done && !pack4Done)
-        {
-            endMsg = true;
+        if (pack1Done && pack2Done && pack3Done && !pack4Done) {
+			bigBell = true;
+            jurij = false;
             dancingOne = false;
             opening = false;
-            bigBell = false;
 
             newGuide = true;
             pack4Done = true;
+
+        }
+    }
+
+    public void StartEnd()
+    {
+        if (pack1Done && pack2Done && pack3Done && pack4Done && !pack5Done)
+        {
+            endMsg = true;
+            bigBell = false;
+            jurij = false;
+            dancingOne = false;
+            opening = false;
+
+            newGuide = true;
+            pack5Done = true;
 
         }
     }
