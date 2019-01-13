@@ -4,4 +4,5 @@
 !.gitignore
 !/Assets/
 !/ProjectSettings/
-!/Builds/Windows/
+!/Builds/
+/Builds/WebGL
