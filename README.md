@@ -1,6 +1,6 @@
 # UnityKurent
 
-This is the unity version of game Kurent made for clas RGTI at University of Ljubljana, Faculty of Computer and Information Science.
+This is the unity version of game Kurent made for class RGTI at University of Ljubljana, Faculty of Computer and Information Science.
 
 The game is available to play on windows - download the folder Builds/Windows and run UnityKurent.exe.
 
